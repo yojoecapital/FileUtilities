@@ -12,7 +12,7 @@ namespace fs
                 args => args.Length > 0 && args[0].ToLower().Equals("ls"),
                 FileUtilitiesCommandManager.Ls,
                 "ls [path]",
-                "List Segments of [path] or current directory."
+                "List segments of [path] or current directory."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("cp"),
