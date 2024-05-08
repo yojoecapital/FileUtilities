@@ -1,0 +1,5 @@
+C:\Users\youse\source\repos\FileUtilities\FileUtilitiesCore\obj\Debug\net6.0-windows\futils.csproj.AssemblyReference.cache
+C:\Users\youse\source\repos\FileUtilities\FileUtilitiesCore\obj\Debug\net6.0-windows\futils.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\youse\source\repos\FileUtilities\FileUtilitiesCore\obj\Debug\net6.0-windows\futils.AssemblyInfoInputs.cache
+C:\Users\youse\source\repos\FileUtilities\FileUtilitiesCore\obj\Debug\net6.0-windows\futils.AssemblyInfo.cs
+C:\Users\youse\source\repos\FileUtilities\FileUtilitiesCore\obj\Debug\net6.0-windows\futils.csproj.CoreCompileInputs.cache
