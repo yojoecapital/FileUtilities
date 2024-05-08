@@ -78,9 +78,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\youse\\source\\repos\\FileUtilities\\FileUtilitiesCore\\futils.csproj",
-      "projectName": "futils",
-      "projectPath": "C:\\Users\\youse\\source\\repos\\FileUtilities\\FileUtilitiesCore\\futils.csproj",
+      "projectUniqueName": "C:\\Users\\youse\\source\\repos\\FileUtilities\\FileUtilitiesCore\\fs.csproj",
+      "projectName": "fs",
+      "projectPath": "C:\\Users\\youse\\source\\repos\\FileUtilities\\FileUtilitiesCore\\fs.csproj",
       "packagesPath": "C:\\Users\\youse\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\youse\\source\\repos\\FileUtilities\\FileUtilitiesCore\\obj\\",
       "projectStyle": "PackageReference",

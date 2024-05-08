@@ -3,3 +3,17 @@ C:\Users\youse\source\repos\FileUtilities\FileUtilitiesCore\obj\Debug\net6.0-win
 C:\Users\youse\source\repos\FileUtilities\FileUtilitiesCore\obj\Debug\net6.0-windows\futils.AssemblyInfoInputs.cache
 C:\Users\youse\source\repos\FileUtilities\FileUtilitiesCore\obj\Debug\net6.0-windows\futils.AssemblyInfo.cs
 C:\Users\youse\source\repos\FileUtilities\FileUtilitiesCore\obj\Debug\net6.0-windows\futils.csproj.CoreCompileInputs.cache
+C:\Users\youse\source\repos\FileUtilities\FileUtilitiesCore\bin\Debug\net6.0-windows\futils.exe
+C:\Users\youse\source\repos\FileUtilities\FileUtilitiesCore\bin\Debug\net6.0-windows\futils.deps.json
+C:\Users\youse\source\repos\FileUtilities\FileUtilitiesCore\bin\Debug\net6.0-windows\futils.runtimeconfig.json
+C:\Users\youse\source\repos\FileUtilities\FileUtilitiesCore\bin\Debug\net6.0-windows\futils.dll
+C:\Users\youse\source\repos\FileUtilities\FileUtilitiesCore\bin\Debug\net6.0-windows\futils.pdb
+C:\Users\youse\source\repos\FileUtilities\FileUtilitiesCore\bin\Debug\net6.0-windows\Newtonsoft.Json.dll
+C:\Users\youse\source\repos\FileUtilities\FileUtilitiesCore\bin\Debug\net6.0-windows\CliFramework.dll
+C:\Users\youse\source\repos\FileUtilities\FileUtilitiesCore\bin\Debug\net6.0-windows\CliFramework.pdb
+C:\Users\youse\source\repos\FileUtilities\FileUtilitiesCore\obj\Debug\net6.0-windows\futils.csproj.CopyComplete
+C:\Users\youse\source\repos\FileUtilities\FileUtilitiesCore\obj\Debug\net6.0-windows\futils.dll
+C:\Users\youse\source\repos\FileUtilities\FileUtilitiesCore\obj\Debug\net6.0-windows\refint\futils.dll
+C:\Users\youse\source\repos\FileUtilities\FileUtilitiesCore\obj\Debug\net6.0-windows\futils.pdb
+C:\Users\youse\source\repos\FileUtilities\FileUtilitiesCore\obj\Debug\net6.0-windows\futils.genruntimeconfig.cache
+C:\Users\youse\source\repos\FileUtilities\FileUtilitiesCore\obj\Debug\net6.0-windows\ref\futils.dll

@@ -5,7 +5,7 @@ VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CliFramework", "..\Surf\CliFramework\CliFramework.csproj", "{CA993828-3B57-402B-80ED-4226990FAA74}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "futils", "FileUtilitiesCore\futils.csproj", "{38F674AA-4151-4BEF-8730-2430F0F2AA0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fs", "FileUtilitiesCore\fs.csproj", "{38F674AA-4151-4BEF-8730-2430F0F2AA0C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
