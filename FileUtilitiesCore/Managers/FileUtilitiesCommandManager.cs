@@ -13,6 +13,8 @@ namespace fs.Manager
 {
     internal static class FileUtilitiesCommandManager
     {
+        private static readonly int resultsPerPage = 10;
+
         public static void Ls(string[] args)
         {
             if (args.Length > 2)
@@ -24,16 +26,8 @@ namespace fs.Manager
             if (args.Length == 1) dir = Directory.GetCurrentDirectory();
             else if (!IsValid(args[1])) return;
             else dir = args[1];
-            var directories = Directory.GetDirectories(dir);
-            var files = Directory.GetFiles(dir);
-            foreach (var directory in directories)
-            {
-                Console.WriteLine($"{new DirectoryInfo(directory).Name}\\");
-            }
-            foreach (var file in files)
-            {
-                Console.WriteLine(Path.GetFileName(file));
-            }
+            var items = Directory.GetDirectories(dir).Select(dir => dir + "\\").Union(Directory.GetFiles(dir));
+            PrettyConsole.PrintList(items, resultsPerPage);
         }
 
         public static void Cp(string[] args)
@@ -103,30 +97,36 @@ namespace fs.Manager
 
         public static void Rm(string[] args)
         {
-            if (args.Length != 2)
+            if (args.Length > 3)
             {
-                PrettyConsole.PrintError("Expected 1 argument.");
+                PrettyConsole.PrintError($"Unexpected argument \"{args[3]}\".");
                 return;
             }
-            if (!IsValid(args[1])) return;
-            Console.Write($"Are you sure you want to remove \"{args[1]}\"? (y/n): ");
+            var flags = GetFlags(args, 2, new string[] { "-r" });
+            if (!IsValid(args[1], true)) return;
+            var files = Directory.GetFiles(Directory.GetCurrentDirectory(), args[1], flags["-r"] ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
+            PrettyConsole.PrintList(files);
+            Console.Write($"Are you sure you want to remove the files list above? (y/n): ");
             if (Console.ReadLine().ToLower() == "y")
             {
-                try
+                foreach (var file in files) 
                 {
-                    if (Directory.Exists(args[1]))
+                    try
                     {
-                        FileSystem.DeleteDirectory(args[1], UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
+                        if (Directory.Exists(file))
+                        {
+                            FileSystem.DeleteDirectory(file, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
+                        }
+                        else if (File.Exists(file))
+                        {
+                            FileSystem.DeleteFile(file, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
+                        }
+                        Console.WriteLine("Removed successfully.");
                     }
-                    else if (File.Exists(args[1]))
+                    catch (Exception ex)
                     {
-                        FileSystem.DeleteFile(args[1], UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
+                        PrettyConsole.PrintError($"Could not remove {file} .\n{ex}");
                     }
-                    Console.WriteLine("Removed successfully.");
-                }
-                catch (Exception ex)
-                {
-                    PrettyConsole.PrintError($"Could not remove.\n{ex}");
                 }
             }
         }
@@ -167,18 +167,9 @@ namespace fs.Manager
             else if (args.Length > 3) PrettyConsole.PrintError($"Unexpected argument \"{args[3]}\".");
             else
             {
-                string path;
-                if (args.Length == 2) path = Directory.GetCurrentDirectory();
-                else
-                {
-                    if (IsValid(args[2])) path = args[2];
-                    else return;
-                }
-                var files = Directory.GetFiles(path, args[1], SearchOption.AllDirectories);
-                foreach (var file in files)
-                {
-                    Console.WriteLine(file);
-                }
+                var flags = GetFlags(args, 2, new string[] { "-r" });
+                var files = Directory.GetFiles(Directory.GetCurrentDirectory(), args[1], flags["-r"] ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
+                PrettyConsole.PrintList(files, resultsPerPage);
             }
         }
 
@@ -279,7 +270,7 @@ namespace fs.Manager
 
                 if (envVarValue != null)
                 {
-                    input = string.Concat(input[..start], envVarValue, input.AsSpan(end + 1));
+                    input = string.Concat(input.AsSpan()[..start], envVarValue, input.AsSpan(end + 1));
                     start += envVarValue.Length;
                 }
                 else
@@ -289,6 +280,19 @@ namespace fs.Manager
             }
 
             return input;
+        }
+
+        private static Dictionary<string, bool> GetFlags(IEnumerable<string> args, int skip, IEnumerable<string> flags)
+        {
+            Dictionary<string, bool> flagResults = new();
+            var checking = args.Skip(skip);
+            foreach (var flag in flags)
+            {
+                bool value = false;
+                if (checking.Contains(flag)) value = true;
+                flagResults[flag] = value;
+            }
+            return flagResults;
         }
 
         private static bool IsValid(string path, bool getDirectoryName = false)

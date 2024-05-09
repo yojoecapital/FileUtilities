@@ -47,8 +47,8 @@ namespace fs
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("find"),
                 FileUtilitiesCommandManager.Find,
-                "find [pattern] [path]",
-                "Finds all segments matching [pattern] in [path] or current directory."
+                "find [pattern]",
+                "Finds all segments matching [pattern]."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("mkdir"),
