@@ -5,16 +5,7 @@
 
 ## Usage
 
-- `fs ls [path]`: List segments of `[path]` or current directory.
-- `fs cp [source] [destination]`: Copy from `[source]` to `[destination]`.
-- `fs mv [source] [destination]`: Move from `[source]` to `[destination]`.
-- `fs rm [path]`: Remove `[path]`.
-- `fs info [path]`: Prints the info of `[path]`.
-- `fs size [path]`: Prints the size of `[path]`.
-- `fs find [pattern] [path]`: Finds all segments matching `[pattern]` in `[path]` or current directory.
-- `fs mkdir [path]`: Make a new directory `[path]`.
-- `fs rmdir [path]`: Remove an empty directory `[path]`.
-- `fs touch [path]`: Touches `[path]` if exists or makes a new file there.
+Use `fs help` to get a listing of commands.
 
 ## Building
 
