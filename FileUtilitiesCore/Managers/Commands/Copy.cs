@@ -33,6 +33,7 @@ namespace FileUtilitiesCore.Managers.Commands
                 {
                     if (!string.IsNullOrEmpty(include) || !string.IsNullOrEmpty(exclude))
                     {
+                        source = Path.GetFullPath(source);
                         var displayDest = dest;
                         dest = Path.GetFullPath(dest);
                         Directory.SetCurrentDirectory(source);

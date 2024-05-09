@@ -30,6 +30,7 @@ namespace FileUtilitiesCore.Managers.Commands
                 {
                     if (!string.IsNullOrEmpty(include) || !string.IsNullOrEmpty(include))
                     {
+                        source = Path.GetFullPath(source);
                         Directory.SetCurrentDirectory(source);
 
                         // If using a pattern then we'll filter
