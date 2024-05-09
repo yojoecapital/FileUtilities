@@ -1,7 +1,7 @@
 ﻿using CliFramework;
-using fs.Manager;
+using FileUtilitiesCore.Managers.CommandManager;
 
-namespace fs
+namespace FileUtilitiesCore
 {
     internal class Program
     {
@@ -10,65 +10,65 @@ namespace fs
             Repl repl = new();
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("ls"),
-                FileUtilitiesCommandManager.Ls,
-                "ls [path]",
-                "List segments of [path] or current directory."
+                List.Command,
+                "ls -r -f [filter]",
+                "List segements. Use -r to display recursively. Use -f [filter] to filter segments."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("cp"),
-                FileUtilitiesCommandManager.Cp,
-                "cp [source] [destination]",
-                "Copy from [source] to [destination]."
+                Copy.Command,
+                "cp [source] [destination] -p -r",
+                "Copy from [source] to [destination]. Use -p for patterns. Use -r to search recursively."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("mv"),
-                FileUtilitiesCommandManager.Mv,
-                "mv [source] [destination]",
-                "Move from [source] to [destination]."
+                Move.Command,
+                "mv [source] [destination] -p -r -o",
+                "Move from [source] to [destination]. Use -p for patterns. Use -r to search recursively. Use -o to overwrite existing files."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("rm"),
-                FileUtilitiesCommandManager.Rm,
-                "rm [path]",
-                "Remove [path]."
+                Remove.Command,
+                "rm [path] -p -r",
+                "Remove [path]. Use -p for patterns. Use -r to search recursively."
             );
             repl.AddCommand(
-                args => args.Length > 0 && args[0].ToLower().Equals("info"),
-                FileUtilitiesCommandManager.Info,
-                "info [path]",
-                "Prints the info of [path]."
-            );
-            repl.AddCommand(
-                args => args.Length > 0 && args[0].ToLower().Equals("size"),
-                FileUtilitiesCommandManager.Size,
-                "size [path]",
-                "Prints the size of [path]."
-            );
-            repl.AddCommand(
-                args => args.Length > 0 && args[0].ToLower().Equals("find"),
-                FileUtilitiesCommandManager.Find,
-                "find [pattern]",
-                "Finds all segments matching [pattern]."
+                args => args.Length > 0 && args[0].ToLower().Equals("nm"),
+                Rename.Command,
+                "nm [path] [name]",
+                "Rename [path] to [name]."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("mkdir"),
-                FileUtilitiesCommandManager.Mkdir,
+                MakeDirectory.Command,
                 "mkdir [path]",
-                "Make a new directory [path]."
-            );
-            repl.AddCommand(
-                args => args.Length > 0 && args[0].ToLower().Equals("rmdir"),
-                FileUtilitiesCommandManager.Rmdir,
-                "rmdir [path]",
-                "Remove an empty directory [path]."
+                "Make a new directory at [path]."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("touch"),
-                FileUtilitiesCommandManager.Touch,
+                Touch.Command,
                 "touch [path]",
-                "Touches [path] if exists or makes a new file there."
+                "Update the file at [path] if it exists. Otherwise, it creates it."
             );
-            repl.preprocessArg = FileUtilitiesCommandManager.PreprocessEnvironmentVariables;
+            repl.AddCommand(
+                args => args.Length > 0 && args[0].ToLower().Equals("info"),
+                Helpers.Info,
+                "info [path]",
+                "Display the file information at [path]."
+            );
+            repl.AddCommand(
+                args => args.Length > 0 && args[0].ToLower().Equals("size"),
+                Helpers.Size,
+                "size [path]",
+                "Display the file size in bytes at [path]."
+            );
+            repl.AddCommand(
+                args => args.Length == 1 && (args[0].ToLower().Equals("open") || args[0].ToLower().Equals("o")),
+                Helpers.OpenSettings,
+                "open (o)",
+                "Open the settings JSON."
+            );
+            repl.preprocessArg = Helpers.PreprocessEnvironmentVariables;
             repl.Process(args);
         }
     }
