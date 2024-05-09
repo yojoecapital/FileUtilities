@@ -10,6 +10,8 @@ namespace FileUtilitiesCore.Managers.Commands
     {
         public static readonly int resultsPerPage = new SettingsFileManager().Settings.resultsPerPage;
 
+        public static bool IsDirectoryEmpty(string path) => !Directory.EnumerateFileSystemEntries(path).Any();
+
         public static IEnumerable<string> Filter(IEnumerable<string> paths,  string include, string exclude)
         {
             var matcher = new Matcher();

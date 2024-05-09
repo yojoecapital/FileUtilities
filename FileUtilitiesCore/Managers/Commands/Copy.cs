@@ -31,34 +31,46 @@ namespace FileUtilitiesCore.Managers.Commands
                 }
                 else if (Directory.Exists(source))
                 {
-                    var option = recurse ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
-                    var matchingFiles = Directory.GetFiles(source, "*", option);
-                    var matchingDirs = Directory.GetDirectories(source, "*", option);
-
-                    if (string.IsNullOrEmpty(include)) include = "**";
-
-                    matchingFiles = Helpers.Filter(matchingFiles, include, exclude).ToArray();
-                    matchingDirs = Helpers.Filter(matchingFiles, include, exclude).ToArray();
-                    if (matchingFiles.Length == 0) return;
-
-                    PrettyConsole.PrintList(matchingFiles.Select(path => Path.GetRelativePath(source, path)).Union(matchingDirs.Select(path => Path.GetRelativePath(source, path) + "\\")));
-                    Console.Write($"Are you sure you want to copy the above items to \"{dest}\"? (y/n): ");
-                    if (!Console.ReadLine().ToLower().Equals("y")) return;
-                    foreach (var filePath in matchingFiles)
+                    if (!string.IsNullOrEmpty(include) || !string.IsNullOrEmpty(exclude))
                     {
-                        // Determine the relative path of each file within the current directory
-                        var relativePath = Path.GetRelativePath(source, filePath);
+                        var displayDest = dest;
+                        dest = Path.GetFullPath(dest);
+                        Directory.SetCurrentDirectory(source);
 
-                        // Combine the destination directory with the relative path to preserve the folder structure
-                        var destinationPath = Path.Combine(dest, relativePath);
-                        var destinationDir = Path.GetDirectoryName(destinationPath);
+                        var option = recurse ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+                        var files = Directory.GetFiles(source, "*", option);
+                        var matchingFiles = Helpers.Filter(files.Select(path => Path.GetRelativePath(source, path)), include, exclude);
+                        source = Path.GetDirectoryName(source);
+                        if (!matchingFiles.Any()) return;
 
-                        // Ensure the directory structure is preserved
-                        if (destinationDir != null && !Directory.Exists(destinationDir))
-                            Directory.CreateDirectory(destinationDir);
+                        PrettyConsole.PrintList(matchingFiles);
+                        Console.Write($"Are you sure you want to copy the above items to \"{displayDest}\"? (y/n): ");
+                        if (!Console.ReadLine().ToLower().Equals("y")) return;
 
-                        // Copy the file
-                        File.Copy(filePath, destinationPath, overwrite);
+                        foreach (var filePath in matchingFiles)
+                        {
+                            // Determine the relative path of each file within the current directory
+                            var relativePath = Path.GetRelativePath(source, filePath);
+
+                            // Combine the destination directory with the relative path to preserve the folder structure
+                            var destinationPath = Path.Combine(dest, relativePath);
+                            var destinationDir = Path.GetDirectoryName(destinationPath);
+
+                            // Ensure the directory structure is preserved
+                            if (destinationDir != null && !Directory.Exists(destinationDir))
+                                Directory.CreateDirectory(destinationDir);
+
+                            // Copy the file
+                            File.Copy(filePath, destinationPath, overwrite);
+                        }
+                    }
+                    else
+                    {
+                        Console.Write($"Are you sure you want to copy the {(Helpers.IsDirectoryEmpty(source) ? "" : "* ")}directory \"{source}\" into \"{dest}\"? (y/n): ");
+                        if (!Console.ReadLine().ToLower().Equals("y")) return;
+                        // If the source is a directory, copy all contents recursively
+                        var destinationDir = Path.Combine(dest, Path.GetFileName(source));
+                        CopyDirectory(source, destinationDir, overwrite);
                     }
                 }
                 else PrettyConsole.PrintError($"\"{source}\" does not exist.");

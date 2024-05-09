@@ -12,55 +12,61 @@ namespace FileUtilitiesCore
                 args => args.Length > 0 && args[0].ToLower().Equals("ls"),
                 List.Command,
                 "ls -r -i [include] -e [exclude]",
-                "List segements. Use -r to display recursively. Use -i [include] to include glob. Use -e [exclude] to exclude glob."
+                "List segements of current directory. Use -r to display recursively. Use -i [include] to include glob. Use -e [exclude] to exclude glob."
+            );
+            repl.AddCommand(
+                args => args.Length > 0 && args[0].ToLower().Equals("find"),
+                Find.Command,
+                "find [dir] -r -i [include] -e [exclude]",
+                "List segements of [dir]. Use -r to display recursively. Use -i [include] to include glob. Use -e [exclude] to exclude glob."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("cp"),
                 Copy.Command,
-                "cp [source] [destination] -p -r",
-                "Copy from [source] to [destination]. Use -p for patterns. Use -r to search recursively."
+                "cp [path] [dir] -r -o -i [include] -e [exclude]",
+                "Copy from [path] into [dir]. Use -r to copy recursively. Use -o to overwrite existing items. Use -i [include] to include glob. Use -e [exclude] to exclude glob."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("mv"),
                 Move.Command,
-                "mv [source] [destination] -p -r -o",
-                "Move from [source] to [destination]. Use -p for patterns. Use -r to search recursively. Use -o to overwrite existing files."
+                "mv [path] [dir] -r -o -i [include] -e [exclude]",
+                "Move from [path] into [dir]. Use -r to move recursively. Use -o to overwrite existing items. Use -i [include] to include glob. Use -e [exclude] to exclude glob."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("rm"),
                 Remove.Command,
-                "rm [path] -p -r",
-                "Remove [path]. Use -p for patterns. Use -r to search recursively."
+                "rm [path] -r -i [include] -e [exclude]",
+                "Remove from [path]. Use -r to remove recursively. Use -i [include] to include glob. Use -e [exclude] to exclude glob."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("nm"),
                 Rename.Command,
                 "nm [path] [name]",
-                "Rename [path] to [name]."
+                "Rename item at [path] to [name]."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("mkdir"),
                 MakeDirectory.Command,
-                "mkdir [path]",
-                "Make a new directory at [path]."
+                "mkdir [dir]",
+                "Make a new directory at [dir]."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("touch"),
                 Touch.Command,
-                "touch [path]",
-                "Update the file at [path] if it exists. Otherwise, it creates it."
+                "touch [file]",
+                "Update the file at [file] if it exists. Otherwise, it creates it."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("info"),
                 Helpers.Info,
-                "info [path]",
-                "Display the file information at [path]."
+                "info [file]",
+                "Display the file information at [file]."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("size"),
                 Helpers.Size,
-                "size [path]",
-                "Display the file size in bytes at [path]."
+                "size [file]",
+                "Display the file size in bytes at [file]."
             );
             repl.AddCommand(
                 args => args.Length == 1 && (args[0].ToLower().Equals("open") || args[0].ToLower().Equals("o")),

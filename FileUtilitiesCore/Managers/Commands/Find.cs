@@ -22,9 +22,11 @@ namespace FileUtilitiesCore.Managers.Commands
                 }
                 var option = recurse ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
                 var items = Directory.GetFiles(directory, "*", option).Select(path => Path.GetRelativePath(directory, path)).Union(Directory.GetDirectories(directory, "*", option).Select(path => Path.GetRelativePath(directory, path) + "\\"));
-                if (string.IsNullOrEmpty(include)) include = "**";
-                if (string.IsNullOrEmpty(exclude)) exclude = "**";
-                items = Helpers.Filter(items, include, exclude);
+                if (!string.IsNullOrEmpty(include) || !string.IsNullOrEmpty(exclude))
+                {
+                    if (string.IsNullOrEmpty(include)) include = "**";
+                    items = Helpers.Filter(items, include, exclude);
+                }
                 if (items.Count() < Helpers.resultsPerPage) PrettyConsole.PrintList(items);
                 else PrettyConsole.PrintList(items, Helpers.resultsPerPage);
             }

@@ -28,37 +28,35 @@ namespace FileUtilitiesCore.Managers.Commands
                 }
                 else if (Directory.Exists(source))
                 {
-                    // If using a pattern then we'll filter
                     if (!string.IsNullOrEmpty(include) || !string.IsNullOrEmpty(include))
                     {
+                        Directory.SetCurrentDirectory(source);
+
+                        // If using a pattern then we'll filter
                         var option = recurse ? System.IO.SearchOption.AllDirectories : System.IO.SearchOption.TopDirectoryOnly;
 
                         // Find files and directories matching the pattern
                         var files = Directory.GetFiles(source, "*", option);
-                        var dirs = Directory.GetDirectories(source, "*", option);
 
                         var matchingFiles = Helpers.Filter(files.Select(path => Path.GetRelativePath(source, path)), include, exclude);
-                        var matchingDirectories = Helpers.Filter(dirs.Select(path => Path.GetRelativePath(source, path) + "\\"), include, exclude);
 
-                        if (!matchingFiles.Any() && !matchingDirectories.Any()) return;
-                        PrettyConsole.PrintList(matchingFiles.Union(matchingDirectories));
+                        if (!matchingFiles.Any()) return;
+                        PrettyConsole.PrintList(matchingFiles);
                         Console.Write($"Are you sure you want to remove the above items? (y/n): ");
                         if (!Console.ReadLine().ToLower().Equals("y")) return;
 
                         // Remove all matching files
                         foreach (string file in matchingFiles)
                             FileSystem.DeleteFile(file, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
-
-                        // Remove all matching directories
-                        foreach (string directory in matchingDirectories)
-                            FileSystem.DeleteDirectory(directory, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
-                        return;
                     }
+                    else
+                    {
 
-                    // If it's a directory, remove it recursively
-                    Console.Write($"Are you sure you want to remove the directory \"{source}\"? (y/n): ");
-                    if (!Console.ReadLine().ToLower().Equals("y")) return;
-                    FileSystem.DeleteDirectory(source, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
+                        // If it's a directory, remove it recursively
+                        Console.Write($"Are you sure you want to remove the {(Helpers.IsDirectoryEmpty(source) ? "" : "* ")}directory \"{source}\"? (y/n): ");
+                        if (!Console.ReadLine().ToLower().Equals("y")) return;
+                        FileSystem.DeleteDirectory(source, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
+                    }
                 }
             }
             catch (Exception ex)
