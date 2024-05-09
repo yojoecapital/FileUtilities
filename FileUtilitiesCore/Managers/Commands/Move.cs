@@ -40,7 +40,6 @@ namespace FileUtilitiesCore.Managers.Commands
                         var option = recurse ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
                         var files = Directory.GetFiles(source, "*", option);
                         var matchingFiles = Helpers.Filter(files.Select(path => Path.GetRelativePath(source, path)), include, exclude);
-                        source = Path.GetDirectoryName(source);
                         if (!matchingFiles.Any()) return;
 
                         PrettyConsole.PrintList(matchingFiles);
@@ -69,8 +68,7 @@ namespace FileUtilitiesCore.Managers.Commands
                         Console.Write($"Are you sure you want to move the {(Helpers.IsDirectoryEmpty(source) ? "" : "* ")}directory \"{source}\" into \"{dest}\"? (y/n): ");
                         if (!Console.ReadLine().ToLower().Equals("y")) return;
                         // If the source is a directory, move all contents recursively
-                        var destinationDir = Path.Combine(dest, Path.GetFileName(source));
-                        MergeDirectories(source, destinationDir, overwrite);
+                        MergeDirectories(source, dest, overwrite);
                     }
                 }
                 else PrettyConsole.PrintError($"\"{source}\" does not exist.");
