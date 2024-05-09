@@ -1,3 +1,31 @@
 # Release Notes - Version [1.1.1]
 
-Added better error handling.
+- `fs help (h)`: Display this message.
+- `fs ls -r -i [include] -e [exclude]`: List segments of the current directory.
+  - `-r`: Display recursively.
+  - `-i [include]`: Include glob patterns.
+  - `-e [exclude]`: Exclude glob patterns.
+- `fs find [dir] -r -i [include] -e [exclude]`: List segments of `[dir]`.
+  - `-r`: Display recursively.
+  - `-i [include]`: Include glob patterns.
+  - `-e [exclude]`: Exclude glob patterns.
+- `fs cp [path] [dir] -r -o -i [include] -e [exclude]`: Copy from `[path]` into `[dir]`.
+  - `-r`: Copy recursively.
+  - `-o`: Overwrite existing items.
+  - `-i [include]`: Include glob patterns.
+  - `-e [exclude]`: Exclude glob patterns.
+- `fs mv [path] [dir] -r -o -i [include] -e [exclude]`: Move from `[path]` into `[dir]`.
+  - `-r`: Move recursively.
+  - `-o`: Overwrite existing items.
+  - `-i [include]`: Include glob patterns.
+  - `-e [exclude]`: Exclude glob patterns.
+- `fs rm [path] -r -i [include] -e [exclude]`: Remove from `[path]`.
+  - `-r`: Remove recursively.
+  - `-i [include]`: Include glob patterns.
+  - `-e [exclude]`: Exclude glob patterns.
+- `fs nm [path] [name]`: Rename the item at `[path]` to `[name]`.
+- `fs mkdir [dir]`: Make a new directory at `[dir]`.
+- `fs touch [file]`: Update the file at `[file]` if it exists. Otherwise, create it.
+- `fs info [file]`: Display the file information at `[file]`.
+- `fs size [file]`: Display the file size in bytes at `[file]`.
+- `fs open (o)`: Open the settings JSON.

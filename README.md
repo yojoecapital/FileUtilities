@@ -5,27 +5,34 @@
 
 ## Usage
 
-- `fs clear (cls)`: Clear the console screen.
 - `fs help (h)`: Display this message.
-- `fs ls -r -i [include] -e [exclude]`: List segments.
+- `fs ls -r -i [include] -e [exclude]`: List segments of the current directory.
   - `-r`: Display recursively.
   - `-i [include]`: Include glob patterns.
   - `-e [exclude]`: Exclude glob patterns.
-- `fs cp [source] [destination] -p -r`: Copy from `[source]` to `[destination]`.
-  - `-p`: Use patterns.
-  - `-r`: Search recursively.
-- `fs mv [source] [destination] -p -r -o`: Move from `[source]` to `[destination]`.
-  - `-p`: Use patterns.
-  - `-r`: Search recursively.
-  - `-o`: Overwrite existing files.
-- `fs rm [path] -p -r`: Remove `[path]`.
-  - `-p`: Use patterns.
-  - `-r`: Search recursively.
-- `fs nm [path] [name]`: Rename `[path]` to `[name]`.
-- `fs mkdir [path]`: Make a new directory at `[path]`.
-- `fs touch [path]`: Update the file at `[path]` if it exists, or create it.
-- `fs info [path]`: Display the file information at `[path]`.
-- `fs size [path]`: Display the file size in bytes at `[path]`.
+- `fs find [dir] -r -i [include] -e [exclude]`: List segments of `[dir]`.
+  - `-r`: Display recursively.
+  - `-i [include]`: Include glob patterns.
+  - `-e [exclude]`: Exclude glob patterns.
+- `fs cp [path] [dir] -r -o -i [include] -e [exclude]`: Copy from `[path]` into `[dir]`.
+  - `-r`: Copy recursively.
+  - `-o`: Overwrite existing items.
+  - `-i [include]`: Include glob patterns.
+  - `-e [exclude]`: Exclude glob patterns.
+- `fs mv [path] [dir] -r -o -i [include] -e [exclude]`: Move from `[path]` into `[dir]`.
+  - `-r`: Move recursively.
+  - `-o`: Overwrite existing items.
+  - `-i [include]`: Include glob patterns.
+  - `-e [exclude]`: Exclude glob patterns.
+- `fs rm [path] -r -i [include] -e [exclude]`: Remove from `[path]`.
+  - `-r`: Remove recursively.
+  - `-i [include]`: Include glob patterns.
+  - `-e [exclude]`: Exclude glob patterns.
+- `fs nm [path] [name]`: Rename the item at `[path]` to `[name]`.
+- `fs mkdir [dir]`: Make a new directory at `[dir]`.
+- `fs touch [file]`: Update the file at `[file]` if it exists. Otherwise, create it.
+- `fs info [file]`: Display the file information at `[file]`.
+- `fs size [file]`: Display the file size in bytes at `[file]`.
 - `fs open (o)`: Open the settings JSON.
 
 ## Building
