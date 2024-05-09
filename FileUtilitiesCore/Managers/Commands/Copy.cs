@@ -18,16 +18,15 @@ namespace FileUtilitiesCore.Managers.Commands
             try
             {
                 // Ensure the destination directory exists
-                if (!Directory.Exists(dest)) Directory.CreateDirectory(dest);
+                var dirName = Path.GetDirectoryName(dest);
+                if (!string.IsNullOrEmpty(dirName) && !Directory.Exists(dirName)) Directory.CreateDirectory(dirName);
 
-                // When `pattern` is false, handle copying a file or directory
                 if (File.Exists(source))
                 {
                     Console.Write($"Are you sure you want to copy the file \"{source}\" to \"{dest}\"? (y/n): ");
                     if (!Console.ReadLine().ToLower().Equals("y")) return;
-                    var destinationFile = Path.Combine(dest, Path.GetFileName(source));
                     // If the source is a file, copy directly to the destination
-                    File.Copy(source, destinationFile, overwrite);
+                    File.Copy(source, dest, overwrite);
                 }
                 else if (Directory.Exists(source))
                 {
@@ -49,11 +48,8 @@ namespace FileUtilitiesCore.Managers.Commands
 
                         foreach (var filePath in matchingFiles)
                         {
-                            // Determine the relative path of each file within the current directory
-                            var relativePath = Path.GetRelativePath(source, filePath);
-
                             // Combine the destination directory with the relative path to preserve the folder structure
-                            var destinationPath = Path.Combine(dest, relativePath);
+                            var destinationPath = Path.Combine(dest, filePath);
                             var destinationDir = Path.GetDirectoryName(destinationPath);
 
                             // Ensure the directory structure is preserved

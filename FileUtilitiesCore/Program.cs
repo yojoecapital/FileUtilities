@@ -23,14 +23,14 @@ namespace FileUtilitiesCore
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("cp"),
                 Copy.Command,
-                "cp [path] [dir] -r -o -i [include] -e [exclude]",
-                "Copy from [path] into [dir]. Use -r to copy recursively. Use -o to overwrite existing items. Use -i [include] to include glob. Use -e [exclude] to exclude glob."
+                "cp [src] [dest] -r -o -i [include] -e [exclude]",
+                "Copy from [src] to [dest]. Use -r to copy recursively. Use -o to overwrite existing items. Use -i [include] to include glob. Use -e [exclude] to exclude glob."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("mv"),
                 Move.Command,
-                "mv [path] [dir] -r -o -i [include] -e [exclude]",
-                "Move from [path] into [dir]. Use -r to move recursively. Use -o to overwrite existing items. Use -i [include] to include glob. Use -e [exclude] to exclude glob."
+                "mv [src] [dest] -r -o -i [include] -e [exclude]",
+                "Move from [src] to [dest]. Use -r to move recursively. Use -o to overwrite existing items. Use -i [include] to include glob. Use -e [exclude] to exclude glob."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("rm"),
