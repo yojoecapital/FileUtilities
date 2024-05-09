@@ -9,12 +9,12 @@
   - `-r`: Display recursively.
   - `-i [include]`: Include glob patterns.
   - `-e [exclude]`: Exclude glob patterns.
-- `fs cp [path] [dir] -r -o -i [include] -e [exclude]`: Copy from `[path]` into `[dir]`.
+- `fs cp [src] [dest] -r -o -i [include] -e [exclude]`: Copy from `[src]` to `[dest]`.
   - `-r`: Copy recursively.
   - `-o`: Overwrite existing items.
   - `-i [include]`: Include glob patterns.
   - `-e [exclude]`: Exclude glob patterns.
-- `fs mv [path] [dir] -r -o -i [include] -e [exclude]`: Move from `[path]` into `[dir]`.
+- `fs mv [src] [dest] -r -o -i [include] -e [exclude]`: Move from `[src]` to `[dest]`.
   - `-r`: Move recursively.
   - `-o`: Overwrite existing items.
   - `-i [include]`: Include glob patterns.
