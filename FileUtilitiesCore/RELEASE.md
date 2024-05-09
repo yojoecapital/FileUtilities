@@ -1,4 +1,4 @@
-# Release Notes - Version [1.1.1]
+# Release Notes - Version [1.2.0]
 
 - `fs help (h)`: Display this message.
 - `fs ls -r -i [include] -e [exclude]`: List segments of the current directory.
