@@ -7,7 +7,7 @@ namespace FileUtilitiesCore.Managers.Commands
     {
         public static void Command(string[] args)
         {
-            if (Helpers.GetParameters(args, 1, new string[] { "-r", "-p" }, Array.Empty<string>(), out var flags, out var _))
+            if (Helpers.GetParameters(args, 1, new string[] { "-r" }, Array.Empty<string>(), out var flags, out var _))
             {
                 Run(args[1], flags["-p"], flags["-r"]);
             }

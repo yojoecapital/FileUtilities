@@ -6,14 +6,14 @@ namespace FileUtilitiesCore.Managers.Commands
     {
         public static void Command(string[] args)
         {
-            if (Helpers.GetParameters(args, 2, new string[] { "-r", "-p" }, Array.Empty<string>(), out var flags, out var _))
+            if (Helpers.GetParameters(args, 2, new string[] { "-r", "-p", "-o" }, Array.Empty<string>(), out var flags, out var _))
             {
-                Run(args[1], args[2], flags["-p"], flags["-r"]);
+                Run(args[1], args[2], flags["-p"], flags["-r"], flags["-o"]);
             }
             else PrettyConsole.PrintError($"Invalid arguments.");
         }
 
-        private static void Run(string source, string dest, bool pattern, bool recurse)
+        private static void Run(string source, string dest, bool pattern, bool recurse, bool overwrite)
         {
             try
             {
@@ -45,7 +45,7 @@ namespace FileUtilitiesCore.Managers.Commands
                             Directory.CreateDirectory(destinationDir);
 
                         // Copy the file
-                        File.Copy(filePath, destinationPath, true);
+                        File.Copy(filePath, destinationPath, overwrite);
                     }
                 }
                 else
@@ -57,7 +57,7 @@ namespace FileUtilitiesCore.Managers.Commands
                         if (!Console.ReadLine().ToLower().Equals("y")) return;
                         var destinationFile = Path.Combine(dest, Path.GetFileName(source));
                         // If the source is a file, copy directly to the destination
-                        File.Copy(source, destinationFile, true);
+                        File.Copy(source, destinationFile, overwrite);
                     }
                     else if (Directory.Exists(source))
                     {
@@ -65,7 +65,7 @@ namespace FileUtilitiesCore.Managers.Commands
                         if (!Console.ReadLine().ToLower().Equals("y")) return;
                         // If the source is a directory, copy all contents recursively
                         var destinationDir = Path.Combine(dest, Path.GetFileName(source));
-                        CopyDirectory(source, destinationDir);
+                        CopyDirectory(source, destinationDir, overwrite);
                     }
                     else PrettyConsole.PrintError($"\"{source}\" does not exist.");
                 }
@@ -77,20 +77,20 @@ namespace FileUtilitiesCore.Managers.Commands
         }
 
         // Helper method to copy directory contents recursively
-        private static void CopyDirectory(string sourceDir, string destDir)
+        private static void CopyDirectory(string sourceDir, string destDir, bool overwrite)
         {
             Directory.CreateDirectory(destDir);
 
             foreach (var file in Directory.GetFiles(sourceDir))
             {
                 var destFile = Path.Combine(destDir, Path.GetFileName(file));
-                File.Copy(file, destFile, true);
+                File.Copy(file, destFile, overwrite);
             }
 
             foreach (var subDir in Directory.GetDirectories(sourceDir))
             {
                 var newSubDir = Path.Combine(destDir, Path.GetFileName(subDir));
-                CopyDirectory(subDir, newSubDir);
+                CopyDirectory(subDir, newSubDir, overwrite);
             }
         }
     }

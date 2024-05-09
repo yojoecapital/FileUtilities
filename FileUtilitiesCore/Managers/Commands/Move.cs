@@ -65,7 +65,7 @@ namespace FileUtilitiesCore.Managers.Commands
                         if (!Console.ReadLine().ToLower().Equals("y")) return;
                         // If the source is a directory, move all contents recursively
                         var destinationDir = Path.Combine(dest, Path.GetFileName(source));
-                        Directory.Move(source, destinationDir);
+                        MergeDirectories(source, destinationDir, overwrite);
                     }
                     else PrettyConsole.PrintError($"\"{source}\" does not exist.");
                 }
@@ -74,6 +74,31 @@ namespace FileUtilitiesCore.Managers.Commands
             {
                 PrettyConsole.PrintError($"Could not move.\n{ex.Message}");
             }
+        }
+
+        public static void MergeDirectories(string sourceDir, string destinationDir, bool overwrite)
+        {
+            // Move each file in the source directory to the destination directory
+            foreach (string sourceFilePath in Directory.GetFiles(sourceDir))
+            {
+                string fileName = Path.GetFileName(sourceFilePath);
+                string destFilePath = Path.Combine(destinationDir, fileName);
+                File.Move(sourceFilePath, destFilePath, overwrite);
+            }
+
+            // Recursively move subdirectories to the destination directory
+            foreach (string sourceSubDirPath in Directory.GetDirectories(sourceDir))
+            {
+                string directoryName = Path.GetFileName(sourceSubDirPath);
+                string destSubDirPath = Path.Combine(destinationDir, directoryName);
+
+                // Recursively merge subdirectories
+                MergeDirectories(sourceSubDirPath, destSubDirPath, overwrite);
+            }
+
+            // Optionally delete the source directory if empty or as needed
+            if (Directory.GetFileSystemEntries(sourceDir).Length == 0)
+                Directory.Delete(sourceDir);
         }
     }
 }
