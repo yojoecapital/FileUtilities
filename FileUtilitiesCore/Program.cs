@@ -1,5 +1,5 @@
 ﻿using CliFramework;
-using FileUtilitiesCore.Managers.CommandManager;
+using FileUtilitiesCore.Managers.Commands;
 
 namespace FileUtilitiesCore
 {
