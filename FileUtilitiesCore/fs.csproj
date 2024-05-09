@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Surf\CliFramework\CliFramework.csproj" />
+    <ProjectReference Include="..\CliFramework\CliFramework.csproj" />
   </ItemGroup>
 
   <ItemGroup>
