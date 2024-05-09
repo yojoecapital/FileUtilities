@@ -2,18 +2,15 @@
 using Newtonsoft.Json;
 using System.Security.AccessControl;
 using System.Security.Principal;
-using System;
 using Microsoft.VisualBasic.FileIO;
 using SearchOption = System.IO.SearchOption;
-using System.IO;
-using System.Xml.Linq;
-using System.Reflection.Metadata;
+using ArabizeCore.Managers;
 
 namespace fs.Manager
 {
     internal static class FileUtilitiesCommandManager
     {
-        private static readonly int resultsPerPage = 10;
+        private static readonly int resultsPerPage = new SettingsFileManager().Settings.resultsPerPage;
 
         public static void Ls(string[] args)
         {
@@ -27,7 +24,8 @@ namespace fs.Manager
             else if (!IsValid(args[1])) return;
             else dir = args[1];
             var items = Directory.GetDirectories(dir).Select(dir => dir + "\\").Union(Directory.GetFiles(dir));
-            PrettyConsole.PrintList(items, resultsPerPage);
+            if (items.Count() < resultsPerPage) PrettyConsole.PrintList(items);
+            else PrettyConsole.PrintList(items, resultsPerPage);
         }
 
         public static void Cp(string[] args)
@@ -169,7 +167,8 @@ namespace fs.Manager
             {
                 var flags = GetFlags(args, 2, new string[] { "-r" });
                 var files = Directory.GetFiles(Directory.GetCurrentDirectory(), args[1], flags["-r"] ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
-                PrettyConsole.PrintList(files, resultsPerPage);
+                if (files.Length < resultsPerPage) PrettyConsole.PrintList(files);
+                else PrettyConsole.PrintList(files, resultsPerPage);
             }
         }
 

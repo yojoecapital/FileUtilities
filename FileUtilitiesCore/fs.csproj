@@ -11,4 +11,10 @@
     <ProjectReference Include="..\..\Surf\CliFramework\CliFramework.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="settings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
