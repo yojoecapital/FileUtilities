@@ -47,7 +47,7 @@ namespace FileUtilitiesCore.Managers.Commands
                 else
                 {
                     // Handle the case where the file or directory does not exist
-                    PrettyConsole.PrintError($"Path \"{path}\" does not exist.");
+                    PrettyConsole.PrintError($"\"{path}\" does not exist.");
                 }
             }
             catch (Exception ex)

@@ -18,15 +18,10 @@ namespace FileUtilitiesCore.Managers.Commands
                 var option = recurse ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
                 var currentDir = Directory.GetCurrentDirectory();
                 var items = Directory.GetFiles(currentDir, "*", option).Select(path => Path.GetRelativePath(currentDir, path)).Union(Directory.GetDirectories(currentDir, "*", option).Select(path => Path.GetRelativePath(currentDir, path) + "\\"));
-                if (!string.IsNullOrEmpty(include))
+                if (!string.IsNullOrEmpty(include) || !string.IsNullOrEmpty(exclude))
                 {
-                    if (!string.IsNullOrEmpty(exclude)) items = Helpers.Filter(items, include, exclude);
-                    else items = Helpers.Filter(items, include);
-
-                }
-                if (!string.IsNullOrEmpty(exclude))
-                {
-                    items = Helpers.Filter(items, "**", exclude);
+                    if (string.IsNullOrEmpty(include)) include = "**";
+                    items = Helpers.Filter(items, include, exclude);
                 }
                 if (items.Count() < Helpers.resultsPerPage) PrettyConsole.PrintList(items);
                 else PrettyConsole.PrintList(items, Helpers.resultsPerPage);

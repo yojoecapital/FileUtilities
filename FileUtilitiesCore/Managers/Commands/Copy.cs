@@ -6,35 +6,48 @@ namespace FileUtilitiesCore.Managers.Commands
     {
         public static void Command(string[] args)
         {
-            if (Helpers.GetParameters(args, 2, new string[] { "-r", "-p", "-o" }, Array.Empty<string>(), out var flags, out var _))
+            if (Helpers.GetParameters(args, 2, new string[] { "-r", "-o" }, new string[] { "-i", "-e" }, out var flags, out var strs))
             {
-                Run(args[1], args[2], flags["-p"], flags["-r"], flags["-o"]);
+                Run(args[1], args[2], strs["-i"], strs["-e"], flags["-r"], flags["-o"]);
             }
             else PrettyConsole.PrintError($"Invalid arguments.");
         }
 
-        private static void Run(string source, string dest, bool pattern, bool recurse, bool overwrite)
+        private static void Run(string source, string dest, string include, string exclude, bool recurse, bool overwrite)
         {
             try
             {
                 // Ensure the destination directory exists
                 if (!Directory.Exists(dest)) Directory.CreateDirectory(dest);
 
-                if (pattern)
+                // When `pattern` is false, handle copying a file or directory
+                if (File.Exists(source))
                 {
-                    // When `pattern` is true, treat `source` as a search pattern
-                    var currentDir = Directory.GetCurrentDirectory();
+                    Console.Write($"Are you sure you want to copy the file \"{source}\" to \"{dest}\"? (y/n): ");
+                    if (!Console.ReadLine().ToLower().Equals("y")) return;
+                    var destinationFile = Path.Combine(dest, Path.GetFileName(source));
+                    // If the source is a file, copy directly to the destination
+                    File.Copy(source, destinationFile, overwrite);
+                }
+                else if (Directory.Exists(source))
+                {
                     var option = recurse ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
-                    var matchingFiles = Directory.GetFiles(currentDir, "*", option);
-                    matchingFiles = Helpers.Filter(matchingFiles, source).ToArray();
+                    var matchingFiles = Directory.GetFiles(source, "*", option);
+                    var matchingDirs = Directory.GetDirectories(source, "*", option);
+
+                    if (string.IsNullOrEmpty(include)) include = "**";
+
+                    matchingFiles = Helpers.Filter(matchingFiles, include, exclude).ToArray();
+                    matchingDirs = Helpers.Filter(matchingFiles, include, exclude).ToArray();
                     if (matchingFiles.Length == 0) return;
-                    PrettyConsole.PrintList(matchingFiles.Select(path => Path.GetRelativePath(currentDir, path)));
+
+                    PrettyConsole.PrintList(matchingFiles.Select(path => Path.GetRelativePath(source, path)).Union(matchingDirs.Select(path => Path.GetRelativePath(source, path) + "\\")));
                     Console.Write($"Are you sure you want to copy the above items to \"{dest}\"? (y/n): ");
                     if (!Console.ReadLine().ToLower().Equals("y")) return;
                     foreach (var filePath in matchingFiles)
                     {
                         // Determine the relative path of each file within the current directory
-                        var relativePath = Path.GetRelativePath(currentDir, filePath);
+                        var relativePath = Path.GetRelativePath(source, filePath);
 
                         // Combine the destination directory with the relative path to preserve the folder structure
                         var destinationPath = Path.Combine(dest, relativePath);
@@ -48,27 +61,7 @@ namespace FileUtilitiesCore.Managers.Commands
                         File.Copy(filePath, destinationPath, overwrite);
                     }
                 }
-                else
-                {
-                    // When `pattern` is false, handle copying a file or directory
-                    if (File.Exists(source))
-                    {
-                        Console.Write($"Are you sure you want to copy the file \"{source}\" to \"{dest}\"? (y/n): ");
-                        if (!Console.ReadLine().ToLower().Equals("y")) return;
-                        var destinationFile = Path.Combine(dest, Path.GetFileName(source));
-                        // If the source is a file, copy directly to the destination
-                        File.Copy(source, destinationFile, overwrite);
-                    }
-                    else if (Directory.Exists(source))
-                    {
-                        Console.Write($"Are you sure you want to copy the directory \"{source}\" to \"{dest}\"? (y/n): ");
-                        if (!Console.ReadLine().ToLower().Equals("y")) return;
-                        // If the source is a directory, copy all contents recursively
-                        var destinationDir = Path.Combine(dest, Path.GetFileName(source));
-                        CopyDirectory(source, destinationDir, overwrite);
-                    }
-                    else PrettyConsole.PrintError($"\"{source}\" does not exist.");
-                }
+                else PrettyConsole.PrintError($"\"{source}\" does not exist.");
             }
             catch (Exception ex)
             {

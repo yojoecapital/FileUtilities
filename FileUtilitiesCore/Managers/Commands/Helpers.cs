@@ -10,8 +10,14 @@ namespace FileUtilitiesCore.Managers.Commands
     {
         public static readonly int resultsPerPage = new SettingsFileManager().Settings.resultsPerPage;
 
-        public static IEnumerable<string> Filter(IEnumerable<string> paths,  string filter) => new Matcher().AddInclude(filter).Match(paths).Files.Select(file => file.Path);
-        public static IEnumerable<string> Filter(IEnumerable<string> paths,  string include, string exclude) => new Matcher().AddInclude(include).AddExclude(exclude).Match(paths).Files.Select(file => file.Path);
+        public static IEnumerable<string> Filter(IEnumerable<string> paths,  string include, string exclude)
+        {
+            var matcher = new Matcher();
+            if (!string.IsNullOrEmpty(include)) matcher.AddInclude(include);
+            else matcher.AddInclude("**");
+            if (!string.IsNullOrEmpty(exclude)) matcher.AddExclude(exclude);
+            return matcher.Match(paths).Files.Select(file => file.Path);
+        }
 
         public static void Info(string[] args)
         {

@@ -26,7 +26,7 @@ namespace FileUtilitiesCore.Managers.Commands
                     var currentDir = Directory.GetCurrentDirectory();
                     var option = recurse ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
                     var matchingFiles = Directory.GetFiles(currentDir, "*", option);
-                    matchingFiles = Helpers.Filter(matchingFiles, source).ToArray();
+                    //matchingFiles = Helpers.Filter(matchingFiles, source).ToArray();
                     if (matchingFiles.Length == 0) return;
                     PrettyConsole.PrintList(matchingFiles.Select(path => Path.GetRelativePath(currentDir, path)));
                     Console.Write($"Are you sure you want to move the above items into \"{dest}\"? (y/n): ");
