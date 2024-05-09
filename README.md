@@ -5,7 +5,28 @@
 
 ## Usage
 
-Use `fs help` to get a listing of commands.
+- `fs clear (cls)`: Clear the console screen.
+- `fs help (h)`: Display this message.
+- `fs ls -r -i [include] -e [exclude]`: List segments.
+  - `-r`: Display recursively.
+  - `-i [include]`: Include glob patterns.
+  - `-e [exclude]`: Exclude glob patterns.
+- `fs cp [source] [destination] -p -r`: Copy from `[source]` to `[destination]`.
+  - `-p`: Use patterns.
+  - `-r`: Search recursively.
+- `fs mv [source] [destination] -p -r -o`: Move from `[source]` to `[destination]`.
+  - `-p`: Use patterns.
+  - `-r`: Search recursively.
+  - `-o`: Overwrite existing files.
+- `fs rm [path] -p -r`: Remove `[path]`.
+  - `-p`: Use patterns.
+  - `-r`: Search recursively.
+- `fs nm [path] [name]`: Rename `[path]` to `[name]`.
+- `fs mkdir [path]`: Make a new directory at `[path]`.
+- `fs touch [path]`: Update the file at `[path]` if it exists, or create it.
+- `fs info [path]`: Display the file information at `[path]`.
+- `fs size [path]`: Display the file size in bytes at `[path]`.
+- `fs open (o)`: Open the settings JSON.
 
 ## Building
 
