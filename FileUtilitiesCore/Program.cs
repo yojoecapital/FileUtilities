@@ -11,8 +11,8 @@ namespace FileUtilitiesCore
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("ls"),
                 List.Command,
-                "ls -r -f [filter] -e [exclude]",
-                "List segements. Use -r to display recursively. Use -f [filter] to filter segments. Use -e [exclude] to exclude segments."
+                "ls -r -i [include] -e [exclude]",
+                "List segements. Use -r to display recursively. Use -i [include] to include glob. Use -e [exclude] to exclude glob."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("cp"),

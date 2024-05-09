@@ -7,7 +7,7 @@ namespace FileUtilitiesCore.Managers.CommandManager
         public static void Command(string[] args)
         {
             if (Helpers.GetParameters(args, 0, new string[] { "-r" }, new string[] { "-i", "-e" }, out var flags, out var strs))
-                Run(strs["-f"], strs["-e"], flags["-r"]);
+                Run(strs["-i"], strs["-e"], flags["-r"]);
             else PrettyConsole.PrintError($"Invalid arguments.");
         }
 
