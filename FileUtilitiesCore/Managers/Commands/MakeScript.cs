@@ -82,13 +82,17 @@ namespace FileUtilitiesCore.Managers.Commands
                     else lines.Add(lineInput);
                 }
 
+                Console.Write("Enter in a help message: ");
+                var help = Console.ReadLine().Trim();
+
                 var script = string.Join("\n", lines);
                 string id = DateTime.Now.ToString("yyyyMMdd_HHmmss_fff");
 
                 var scriptItem = new ScriptItem()
                 {
                     id = id,
-                    args = args
+                    args = args,
+                    help = help
                 };
 
                 Helpers.fileManager.SaveScriptItem(name, scriptItem, script);

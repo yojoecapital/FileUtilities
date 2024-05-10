@@ -34,9 +34,15 @@ namespace FileUtilitiesCore.Managers.Commands
                     PrettyConsole.PrintError($"Invalid arguments. No argument should contain the characters {string.Join(", ", specialChars.Select(c => "\"" + c + "\""))}.");
                     return;
                 }
+                if (args.Length == 1 && (args[0].Equals("help") || args[0].Equals("h")))
+                {
+                    Console.Write(scriptItem.help);
+                    return;
+                }
                 if (scriptItem.args != null && !AreAllMatched(scriptItem.args, args))
                 {
                     PrettyConsole.PrintError($"Invalid arguments. Expected {scriptItem.args.Length} arguments.\nexec {script} {string.Join(' ', scriptItem.args.Select(arg => "@\"" + arg + "\""))}");
+                    Console.Write(scriptItem.help);
                     return;
                 }
 

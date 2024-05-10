@@ -4,5 +4,6 @@
     {
         public string[] args;
         public string id;
+        public string help;
     }
 }
