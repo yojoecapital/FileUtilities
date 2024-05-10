@@ -1,3 +1,5 @@
 {
-    "resultsPerPage": 15
+  "resultsPerPage": 15,
+  "scriptsPath": "scripts",
+  "endBlock":  "</bat>"
 }
