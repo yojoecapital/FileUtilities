@@ -40,13 +40,11 @@ namespace FileUtilitiesCore.Managers.Commands
                     return;
                 }
 
-                Directory.SetCurrentDirectory(Helpers.fileManager.ScriptsFilePath);
-                
                 // Set up the process start information
                 var processStartInfo = new ProcessStartInfo()
                 {
                     FileName = "cmd.exe",
-                    Arguments = $"/c {scriptItem.id + ".bat"} {string.Join(" ", args.Select(arg => $"\"{arg}\""))}",
+                    Arguments = $"/c \"\"{path}\" {string.Join(" ", args.Select(arg => $"\"{arg}\""))}\"",
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     UseShellExecute = false,
