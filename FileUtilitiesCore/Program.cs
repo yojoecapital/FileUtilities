@@ -89,8 +89,8 @@ namespace FileUtilitiesCore
             repl.AddCommand(
                 args => (args.Length == 2 || args.Length == 3) && (args[0].ToLower().Equals("open") || args[0].ToLower().Equals("o")) && args[1].ToLower().Equals("scripts"),
                 Helpers.OpenScripts,
-                "open scripts",
-                "Open the script items directory."
+                "open scripts -p",
+                "Prints the script items directory. Use -p to open the directory."
             );
             repl.AddCommand(
                 args => args.Length == 1 && (args[0].ToLower().Equals("open") || args[0].ToLower().Equals("o")),
