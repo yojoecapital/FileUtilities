@@ -24,7 +24,7 @@ namespace FileUtilitiesCore.Managers.Commands
                 if (File.Exists(source))
                 {
                     Console.Write($"Are you sure you want to move the file \"{source}\" into \"{dest}\"? (y/n): ");
-                    if (!Console.ReadLine().ToLower().Equals("y")) return;
+                    if (!Console.ReadLine().Trim().ToLower().Equals("y")) return;
                     // If the source is a file, move directly to the destination
                     File.Move(source, dest, overwrite);
                 }
@@ -44,7 +44,7 @@ namespace FileUtilitiesCore.Managers.Commands
 
                         PrettyConsole.PrintList(matchingFiles);
                         Console.Write($"Are you sure you want to move the above items into \"{displayDest}\"? (y/n): ");
-                        if (!Console.ReadLine().ToLower().Equals("y")) return;
+                        if (!Console.ReadLine().Trim().ToLower().Equals("y")) return;
 
                         foreach (var filePath in matchingFiles)
                         {
@@ -63,7 +63,7 @@ namespace FileUtilitiesCore.Managers.Commands
                     else
                     {
                         Console.Write($"Are you sure you want to move the {(Helpers.IsDirectoryEmpty(source) ? "" : "* ")}directory \"{source}\" into \"{dest}\"? (y/n): ");
-                        if (!Console.ReadLine().ToLower().Equals("y")) return;
+                        if (!Console.ReadLine().Trim().ToLower().Equals("y")) return;
                         // If the source is a directory, move all contents recursively
                         MergeDirectories(source, dest, overwrite);
                     }

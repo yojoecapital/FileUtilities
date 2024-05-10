@@ -24,7 +24,7 @@ namespace FileUtilitiesCore.Managers.Commands
                 if (File.Exists(source))
                 {
                     Console.Write($"Are you sure you want to copy the file \"{source}\" to \"{dest}\"? (y/n): ");
-                    if (!Console.ReadLine().ToLower().Equals("y")) return;
+                    if (!Console.ReadLine().Trim().ToLower().Equals("y")) return;
                     // If the source is a file, copy directly to the destination
                     File.Copy(source, dest, overwrite);
                 }
@@ -44,7 +44,7 @@ namespace FileUtilitiesCore.Managers.Commands
 
                         PrettyConsole.PrintList(matchingFiles);
                         Console.Write($"Are you sure you want to copy the above items to \"{displayDest}\"? (y/n): ");
-                        if (!Console.ReadLine().ToLower().Equals("y")) return;
+                        if (!Console.ReadLine().Trim().ToLower().Equals("y")) return;
 
                         foreach (var filePath in matchingFiles)
                         {
@@ -63,7 +63,7 @@ namespace FileUtilitiesCore.Managers.Commands
                     else
                     {
                         Console.Write($"Are you sure you want to copy the {(Helpers.IsDirectoryEmpty(source) ? "" : "* ")}directory \"{source}\" into \"{dest}\"? (y/n): ");
-                        if (!Console.ReadLine().ToLower().Equals("y")) return;
+                        if (!Console.ReadLine().Trim().ToLower().Equals("y")) return;
                         // If the source is a directory, copy all contents recursively
                         CopyDirectory(source, dest, overwrite);
                     }

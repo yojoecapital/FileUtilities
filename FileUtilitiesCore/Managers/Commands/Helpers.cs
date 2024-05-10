@@ -8,7 +8,7 @@ namespace FileUtilitiesCore.Managers.Commands
 {
     internal static class Helpers
     {
-        public static readonly int resultsPerPage = new SettingsFileManager().Settings.resultsPerPage;
+        public static readonly SettingsFileManager fileManager = new SettingsFileManager();
 
         public static bool IsDirectoryEmpty(string path) => !Directory.EnumerateFileSystemEntries(path).Any();
 
@@ -77,6 +77,18 @@ namespace FileUtilitiesCore.Managers.Commands
         public static void OpenSettings(string[] _)
         {
             var path = SettingsFileManager.SettingsFilePath;
+            ProcessStartInfo psi = new()
+            {
+                FileName = path,
+                UseShellExecute = true
+            };
+            Process.Start(psi);
+            Console.WriteLine(path);
+        }
+        
+        public static void OpenScripts(string[] _)
+        {
+            var path = fileManager.ScriptsFilePath;
             ProcessStartInfo psi = new()
             {
                 FileName = path,

@@ -1,13 +1,9 @@
 ﻿using CliFramework;
+using FileUtilitiesCore.Utilities;
 using Newtonsoft.Json;
 
 namespace ArabizeCore.Managers
 {
-    internal class Settings
-    {
-        public int resultsPerPage = 15;
-    }
-
     internal class SettingsFileManager : FileManager
     {
         public static string SettingsFilePath
@@ -33,6 +29,35 @@ namespace ArabizeCore.Managers
                 settings = value;
                 SetObject(SettingsFilePath, settings, Formatting.Indented);
             }
+        }
+
+        public string ScriptsFilePath
+        {
+            get => Settings?.scriptsPath ?? "scripts";
+        }
+
+        public ScriptItem GetScriptItem(string name)
+        {
+            var path = Path.Combine(ScriptsFilePath, name + ".json");
+            if (File.Exists(path)) return GetObject<ScriptItem>(path);
+            return null;
+        }
+        
+        public void SaveScriptItem(string name, ScriptItem item, string script)
+        {
+            Directory.CreateDirectory(ScriptsFilePath);
+            var itemPath = Path.Combine(ScriptsFilePath, name + ".json");
+            var scriptPath = Path.Combine(ScriptsFilePath, item.id + ".bat");
+            SetObject(itemPath, item);
+            File.WriteAllText(scriptPath, script);
+        }
+        
+        public void DeleteScriptItem(string name, ScriptItem item)
+        {
+            var itemPath = Path.Combine(ScriptsFilePath, name + ".json");
+            var scriptPath = Path.Combine(ScriptsFilePath, item.id + ".bat");
+            if (File.Exists(itemPath)) File.Delete(itemPath);
+            if (File.Exists(scriptPath)) File.Delete(scriptPath);
         }
     }
 }

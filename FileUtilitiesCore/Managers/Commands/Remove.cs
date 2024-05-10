@@ -23,7 +23,7 @@ namespace FileUtilitiesCore.Managers.Commands
                 {
                     // If it's a file, delete it directly
                     Console.Write($"Are you sure you want to remove the file \"{source}\"? (y/n): ");
-                    if (!Console.ReadLine().ToLower().Equals("y")) return;
+                    if (!Console.ReadLine().Trim().ToLower().Equals("y")) return;
                     FileSystem.DeleteFile(source, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
                 }
                 else if (Directory.Exists(source))
@@ -44,7 +44,7 @@ namespace FileUtilitiesCore.Managers.Commands
                         if (!matchingFiles.Any()) return;
                         PrettyConsole.PrintList(matchingFiles);
                         Console.Write($"Are you sure you want to remove the above items? (y/n): ");
-                        if (!Console.ReadLine().ToLower().Equals("y")) return;
+                        if (!Console.ReadLine().Trim().ToLower().Equals("y")) return;
 
                         // Remove all matching files
                         foreach (string file in matchingFiles)
@@ -55,7 +55,7 @@ namespace FileUtilitiesCore.Managers.Commands
 
                         // If it's a directory, remove it recursively
                         Console.Write($"Are you sure you want to remove the {(Helpers.IsDirectoryEmpty(source) ? "" : "* ")}directory \"{source}\"? (y/n): ");
-                        if (!Console.ReadLine().ToLower().Equals("y")) return;
+                        if (!Console.ReadLine().Trim().ToLower().Equals("y")) return;
                         FileSystem.DeleteDirectory(source, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
                     }
                 }

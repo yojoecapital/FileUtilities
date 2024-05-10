@@ -69,6 +69,30 @@ namespace FileUtilitiesCore
                 "Display the file size in bytes at [file]."
             );
             repl.AddCommand(
+                args => args.Length > 0 && args[0].ToLower().Equals("exec"),
+                Exec.Command,
+                "exec [script] [...args]",
+                "Executes a script item."
+            );
+            repl.AddCommand(
+                args => args.Length == 2 && args[0].ToLower().Equals("make") && args[1].ToLower().Equals("script"),
+                MakeScript.Command,
+                "make script",
+                "Steps to make a new script item."
+            );
+            repl.AddCommand(
+                args => args.Length > 2 && args[0].ToLower().Equals("remove") && args[1].ToLower().Equals("script"),
+                RemoveScript.Command,
+                "remove script [script]",
+                "Remove [script]."
+            );
+            repl.AddCommand(
+                args => args.Length == 2 && (args[0].ToLower().Equals("open") || args[0].ToLower().Equals("o")) && args[1].ToLower().Equals("scripts"),
+                Helpers.OpenScripts,
+                "open scripts",
+                "Open the script items directory."
+            );
+            repl.AddCommand(
                 args => args.Length == 1 && (args[0].ToLower().Equals("open") || args[0].ToLower().Equals("o")),
                 Helpers.OpenSettings,
                 "open (o)",

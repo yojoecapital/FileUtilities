@@ -27,8 +27,8 @@ namespace FileUtilitiesCore.Managers.Commands
                     if (string.IsNullOrEmpty(include)) include = "**";
                     items = Helpers.Filter(items, include, exclude);
                 }
-                if (items.Count() < Helpers.resultsPerPage) PrettyConsole.PrintList(items);
-                else PrettyConsole.PrintList(items, Helpers.resultsPerPage);
+                if (items.Count() < Helpers.fileManager.Settings.resultsPerPage) PrettyConsole.PrintList(items);
+                else PrettyConsole.PrintList(items, Helpers.fileManager.Settings.resultsPerPage);
             }
             catch (Exception ex)
             {
