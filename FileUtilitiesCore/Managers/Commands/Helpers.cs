@@ -112,6 +112,15 @@ namespace FileUtilitiesCore.Managers.Commands
             Console.WriteLine(path);
         }
 
+        public static void ListScripts(string[] _)
+        {
+            var path = fileManager.ScriptsFilePath;
+            if (Directory.Exists(path))
+            {
+                foreach (var file in Directory.GetFiles(path, "*.json")) Console.WriteLine(Path.GetRelativePath(path, file));
+            }
+        }
+
         public static string PreprocessEnvironmentVariables(string input)
         {
             // replace "~" with the USERPROFILE environment variable

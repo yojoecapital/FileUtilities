@@ -93,6 +93,12 @@ namespace FileUtilitiesCore
                 "Prints the script items directory. Use -p to open the directory."
             );
             repl.AddCommand(
+                args => args.Length == 2 && args[0].ToLower().Equals("list") || args[0].ToLower().Equals("o") && args[1].ToLower().Equals("scripts"),
+                Helpers.ListScripts,
+                "list scripts",
+                "Lists the available scripts."
+            );
+            repl.AddCommand(
                 args => args.Length == 1 && (args[0].ToLower().Equals("open") || args[0].ToLower().Equals("o")),
                 Helpers.OpenSettings,
                 "open (o)",
