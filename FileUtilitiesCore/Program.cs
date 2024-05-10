@@ -87,7 +87,7 @@ namespace FileUtilitiesCore
                 "Remove [script]."
             );
             repl.AddCommand(
-                args => args.Length == 2 && (args[0].ToLower().Equals("open") || args[0].ToLower().Equals("o")) && args[1].ToLower().Equals("scripts"),
+                args => (args.Length == 2 || args.Length == 3) && (args[0].ToLower().Equals("open") || args[0].ToLower().Equals("o")) && args[1].ToLower().Equals("scripts"),
                 Helpers.OpenScripts,
                 "open scripts",
                 "Open the script items directory."

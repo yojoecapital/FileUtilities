@@ -86,15 +86,29 @@ namespace FileUtilitiesCore.Managers.Commands
             Console.WriteLine(path);
         }
         
-        public static void OpenScripts(string[] _)
+        public static void OpenScripts(string[] args)
         {
-            var path = fileManager.ScriptsFilePath;
-            ProcessStartInfo psi = new()
+            bool proc = false;
+            if (args.Length == 3)
             {
-                FileName = path,
-                UseShellExecute = true
-            };
-            Process.Start(psi);
+                if (args[2].Trim().Equals("-p"))
+                    proc = true;
+                else
+                {
+                    PrettyConsole.PrintError($"Invalid arguments.");
+                    return;
+                }
+            }
+            var path = fileManager.ScriptsFilePath;
+            if (proc)
+            {
+                ProcessStartInfo psi = new()
+                {
+                    FileName = path,
+                    UseShellExecute = true
+                };
+                Process.Start(psi);
+            }
             Console.WriteLine(path);
         }
 
