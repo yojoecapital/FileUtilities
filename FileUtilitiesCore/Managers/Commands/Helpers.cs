@@ -100,7 +100,7 @@ namespace FileUtilitiesCore.Managers.Commands
                 }
             }
             var path = fileManager.ScriptsFilePath;
-            if (proc)
+            if (proc && Directory.Exists(path))
             {
                 ProcessStartInfo psi = new()
                 {
