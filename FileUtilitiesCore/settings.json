@@ -1,5 +1,12 @@
 {
   "resultsPerPage": 15,
   "scriptsPath": "scripts",
-  "endBlock":  "</bat>"
+  "endBlock":  "</script>",
+  "methods": {
+    "cmd": {
+      "path": "cmd.exe",
+      "setup": ["/c"],
+      "extension": "bat" 
+    }
+  }
 }

@@ -6,73 +6,33 @@ namespace FileUtilitiesCore.Managers.Commands
 {
     internal static class MakeScript
     {
-        public static void Command(string[] _) => Run();
+        public static void Command(string[] args) => Run(args[2]);
 
-        private static void Run()
+        private static void Run(string name)
         {
+            char[] invalidChars = Path.GetInvalidFileNameChars();
+            if (name.Length == 0 || name.Any(c => invalidChars.Contains(c)) || name.Any(char.IsWhiteSpace))
+            {
+                PrettyConsole.PrintError("Invalid script name.");
+                return;
+            }
             try
             {
-                string name = null;
-                while (name == null)
+                string exe = null;
+                PrettyConsole.PrintList(Helpers.fileManager.Settings.methods.Keys);
+                while (exe == null)
                 {
-                    Console.Write("What is the name of your script?: ");
+                    Console.Write("What is this script's execution method? (enter one of the above): ");
                     var input = Console.ReadLine().Trim();
-
-                    // Check for any invalid characters
-                    char[] invalidChars = Path.GetInvalidFileNameChars();
-                    if (input.Length > 0 && !input.Any(c => invalidChars.Contains(c)) && !input.Any(char.IsWhiteSpace))
+                    if (Helpers.fileManager.Settings.methods.ContainsKey(input))
                     {
-                        name = input;
+                        exe = input;
                     }
-                    else PrettyConsole.PrintError("Invalid script name.");
-                }
-
-                int argCount = 0;
-                bool validCount = false;
-                while (!validCount)
-                {
-                    Console.Write("How many arguments does this script take? (click enter to skip argument checking): ");
-                    var input = Console.ReadLine().Trim();
-                    if (input.Length > 0)
-                    {
-                        if (!int.TryParse(input, out argCount)) PrettyConsole.PrintError("Invalid input.");
-                        else validCount = true;
-                    }
-                    else
-                    {
-                        validCount = true;
-                        argCount = -1;
-                    }
-                }
-
-                string[] args = null;
-                if (argCount != -1)
-                {
-                    args = new string[argCount];
-                    for (int i = 0; i < args.Length; i++)
-                    {
-                        bool valid = false;
-                        while (!valid)
-                        {
-                            Console.Write($"Enter a regular expression to check argument {i + 1}. (click enter for @\".*\"): ");
-                            var input = Console.ReadLine().Trim();
-                            if (input.Length == 0) input = ".*";
-                            try
-                            {
-                                _ = new Regex(input);
-                                valid = true;
-                                args[i] = input;
-                            }
-                            catch (Exception ex)
-                            {
-                                PrettyConsole.PrintError(ex.Message);
-                            }
-                        }
-                    }
+                    else PrettyConsole.PrintError($"Invalid executable \"{input}\".");
                 }
 
                 var endBlock = Helpers.fileManager.Settings.endBlock;
-                Console.WriteLine($"Enter in your batch script. (enter in \"{endBlock}\") to finish):");
+                Console.WriteLine($"Write your script. (enter in \"{endBlock}\") to finish):");
                 var lines = new List<string>();
                 string lineInput = null;
                 while (true)
@@ -81,17 +41,15 @@ namespace FileUtilitiesCore.Managers.Commands
                     if (lineInput.Trim().Equals(endBlock)) break;
                     else lines.Add(lineInput);
                 }
+                var script = string.Join("\n", lines);
 
                 Console.Write("Enter in a help message: ");
                 var help = Console.ReadLine().Trim();
 
-                var script = string.Join("\n", lines);
-                string id = DateTime.Now.ToString("yyyyMMdd_HHmmss_fff");
 
                 var scriptItem = new ScriptItem()
                 {
-                    id = id,
-                    args = args,
+                    exe = exe,
                     help = help
                 };
 

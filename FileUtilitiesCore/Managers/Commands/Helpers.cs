@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using ArabizeCore.Managers;
 using System.Diagnostics;
 using Microsoft.Extensions.FileSystemGlobbing;
+using Microsoft.VisualBasic.FileIO;
 
 namespace FileUtilitiesCore.Managers.Commands
 {
@@ -74,6 +75,8 @@ namespace FileUtilitiesCore.Managers.Commands
             }
         }
 
+        public static void Cd(string[] _) => Console.WriteLine(Directory.GetCurrentDirectory());
+
         public static void OpenSettings(string[] _)
         {
             var path = SettingsFileManager.SettingsFilePath;
@@ -86,16 +89,16 @@ namespace FileUtilitiesCore.Managers.Commands
             Console.WriteLine(path);
         }
         
-        public static void OpenScripts(string[] args)
+        public static void DirectoryScripts(string[] args)
         {
             bool proc = false;
             if (args.Length == 3)
             {
-                if (args[2].Trim().Equals("-p"))
+                if (args[2].Trim().ToLower().Equals("-o"))
                     proc = true;
                 else
                 {
-                    PrettyConsole.PrintError($"Invalid arguments.");
+                    PrettyConsole.PrintError("Invalid arguments.");
                     return;
                 }
             }
@@ -109,15 +112,16 @@ namespace FileUtilitiesCore.Managers.Commands
                 };
                 Process.Start(psi);
             }
-            Console.WriteLine(path);
+            Console.WriteLine(Path.GetFullPath(path));
         }
+
 
         public static void ListScripts(string[] _)
         {
             var path = fileManager.ScriptsFilePath;
             if (Directory.Exists(path))
             {
-                foreach (var file in Directory.GetFiles(path, "*.json")) Console.WriteLine(Path.GetRelativePath(path, file));
+                PrettyConsole.PrintList(Directory.GetFiles(path, "*.json").Select(file => Path.GetRelativePath(path, file)[..^5]));
             }
         }
 

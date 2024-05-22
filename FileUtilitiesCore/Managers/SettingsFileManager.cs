@@ -47,7 +47,7 @@ namespace ArabizeCore.Managers
         {
             Directory.CreateDirectory(ScriptsFilePath);
             var itemPath = Path.Combine(ScriptsFilePath, name + ".json");
-            var scriptPath = Path.Combine(ScriptsFilePath, item.id + ".bat");
+            var scriptPath = Path.Combine(ScriptsFilePath, name + "." + Settings.methods[item.exe].extension);
             SetObject(itemPath, item);
             File.WriteAllText(scriptPath, script);
         }
@@ -55,7 +55,7 @@ namespace ArabizeCore.Managers
         public void DeleteScriptItem(string name, ScriptItem item)
         {
             var itemPath = Path.Combine(ScriptsFilePath, name + ".json");
-            var scriptPath = Path.Combine(ScriptsFilePath, item.id + ".bat");
+            var scriptPath = Path.Combine(ScriptsFilePath, name + "." + Settings.methods[item.exe].extension);
             if (File.Exists(itemPath)) File.Delete(itemPath);
             if (File.Exists(scriptPath)) File.Delete(scriptPath);
         }

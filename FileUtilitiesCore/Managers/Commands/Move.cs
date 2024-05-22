@@ -23,7 +23,7 @@ namespace FileUtilitiesCore.Managers.Commands
 
                 if (File.Exists(source))
                 {
-                    Console.Write($"Are you sure you want to move the file \"{source}\" into \"{dest}\"? (y/n): ");
+                    Console.Write($"Are you sure you want to move the file \"{source}\" to \"{dest}\"? (y/n): ");
                     if (!Console.ReadLine().Trim().ToLower().Equals("y")) return;
                     // If the source is a file, move directly to the destination
                     File.Move(source, dest, overwrite);
@@ -62,7 +62,7 @@ namespace FileUtilitiesCore.Managers.Commands
                     }
                     else
                     {
-                        Console.Write($"Are you sure you want to move the {(Helpers.IsDirectoryEmpty(source) ? "" : "* ")}directory \"{source}\" into \"{dest}\"? (y/n): ");
+                        Console.Write($"Are you sure you want to move the {(Helpers.IsDirectoryEmpty(source) ? "" : "* ")}directory \"{source}\" to \"{dest}\"? (y/n): ");
                         if (!Console.ReadLine().Trim().ToLower().Equals("y")) return;
                         // If the source is a directory, move all contents recursively
                         MergeDirectories(source, dest, overwrite);

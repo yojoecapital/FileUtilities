@@ -9,6 +9,12 @@ namespace FileUtilitiesCore
         {
             Repl repl = new();
             repl.AddCommand(
+                args => args.Length == 1 && args[0].ToLower().Equals("cd"),
+                Helpers.Cd,
+                "cd",
+                "Prints the current directory."
+            );
+            repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("ls"),
                 List.Command,
                 "ls -r -i [include] -e [exclude]",
@@ -71,29 +77,29 @@ namespace FileUtilitiesCore
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("exec"),
                 Exec.Command,
-                "exec [script] [...args]",
+                "exec [name] [...args]",
                 "Executes a script item."
             );
             repl.AddCommand(
-                args => args.Length == 2 && args[0].ToLower().Equals("make") && args[1].ToLower().Equals("script"),
+                args => args.Length == 3 && args[0].ToLower().Equals("make") && args[1].ToLower().Equals("script"),
                 MakeScript.Command,
-                "make script",
+                "make script [name]",
                 "Steps to make a new script item."
             );
             repl.AddCommand(
                 args => args.Length > 2 && args[0].ToLower().Equals("remove") && args[1].ToLower().Equals("script"),
                 RemoveScript.Command,
-                "remove script [script]",
-                "Remove [script]."
+                "remove script [name]",
+                "Removes a script item."
             );
             repl.AddCommand(
-                args => (args.Length == 2 || args.Length == 3) && (args[0].ToLower().Equals("open") || args[0].ToLower().Equals("o")) && args[1].ToLower().Equals("scripts"),
-                Helpers.OpenScripts,
-                "open scripts -p",
+                args => (args.Length == 2 || args.Length == 3) && args[0].ToLower().Equals("dir") && args[1].ToLower().Equals("scripts"),
+                Helpers.DirectoryScripts,
+                "dir scripts -o",
                 "Prints the script items directory. Use -p to open the directory."
             );
             repl.AddCommand(
-                args => args.Length == 2 && args[0].ToLower().Equals("list") || args[0].ToLower().Equals("o") && args[1].ToLower().Equals("scripts"),
+                args => args.Length == 2 && args[0].ToLower().Equals("list") && args[1].ToLower().Equals("scripts"),
                 Helpers.ListScripts,
                 "list scripts",
                 "Lists the available scripts."

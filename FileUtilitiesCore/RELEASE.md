@@ -1,14 +1,34 @@
-# Release Notes - Version [2.0.0]
+# Release Notes - Version [2.1.0]
 
-Easy batch script creation was added with safe parameter matching.
+Script items now support different execution methods. Refer to the settings JSON below:
 
-### Default Commands
+```json
+{
+  "resultsPerPage": 15,
+  "scriptsPath": "scripts",
+  "endBlock":  "</script>",
+  "methods": {
+    "cmd": {
+      "path": "cmd.exe",
+      "setup": ["/c"],
+      "extension": "bat" 
+    }
+  }
+}
+```
+
+The `cmd` execution method using `cmd.exe` with the first parameter as the `/c` switch followed by the script name with the `.bat` extension.
+
+## Commands
+
+### Default
 
 - `fs clear (cls)`: Clear the console screen.
 - `fs help (h)`: Display the help message.
 
 ### List and Filter Segments
 
+- `fs cd`: Prints the current directory. This *does not* set the current directory. ✨
 - `fs ls -r -i [include] -e [exclude]`: List segments of the current directory.
   - `-r`: Display recursively.
   - `-i [include]`: Include glob patterns.
@@ -20,6 +40,7 @@ Easy batch script creation was added with safe parameter matching.
 
 ### Copy, Move, and Remove
 
+- Note that when globs or the recursive flag are included, they will be considered if the `[src]` is a directory. Moreover, they will only affect *files*. 
 - `fs cp [src] [dest] -r -o -i [include] -e [exclude]`: Copy from `[src]` to `[dest]`.
   - `-r`: Copy recursively.
   - `-o`: Overwrite existing items.
@@ -49,8 +70,15 @@ Easy batch script creation was added with safe parameter matching.
 - `fs info [file]`: Display the file information at `[file]`.
 - `fs size [file]`: Display the file size in bytes at `[file]`.
 
-### Batch Scripting
+### Scripting ✨
 
-- `fs exec [script] [...args]`: Execute a script item.
-- `fs make script`: Steps to make a new script item.
-- `fs remove script [script]`: Remove `[script]`.
+- `fs exec [name] [...args]`: Execute a script item.
+- `fs make script [name]`: Steps to make a new script item.
+- `fs remove script [name]`: Remove `[script]`.
+- `fs dir scripts -o`: Prints the script items directory.
+  - `-o`: Open the directory.
+- `fs list scripts`: Lists the available scripts.
+
+### Other
+
+- `fs open (o)`: Open the settings JSON.

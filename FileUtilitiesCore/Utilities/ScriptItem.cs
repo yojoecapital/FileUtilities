@@ -2,8 +2,7 @@
 {
     internal class ScriptItem
     {
-        public string[] args;
-        public string id;
+        public string exe;
         public string help;
     }
 }

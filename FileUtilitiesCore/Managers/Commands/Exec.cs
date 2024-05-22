@@ -1,4 +1,5 @@
 ﻿using CliFramework;
+using FileUtilitiesCore.Utilities;
 using System;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
@@ -13,17 +14,28 @@ namespace FileUtilitiesCore.Managers.Commands
             else Run(args[1], args.Skip(2).ToArray());
         }
 
-        private static void Run(string script, string[] args)
+        private static void Run(string name, string[] args)
         {
             try
             {
-                var scriptItem = Helpers.fileManager.GetScriptItem(script);
-                if (scriptItem == null)
+                var item = Helpers.fileManager.GetScriptItem(name);
+                if (item == null)
+                {
+                    PrettyConsole.PrintError("Script item does not exist.");
+                    return;
+                }
+                if (!Helpers.fileManager.Settings.methods.ContainsKey(item.exe)) 
+                {
+                    PrettyConsole.PrintError("Could not find execution method in settings JSON file.");
+                    return;
+                }
+                var method = Helpers.fileManager.Settings.methods[item.exe];
+                if (item == null)
                 {
                     PrettyConsole.PrintError("Could not parse script item JSON file.");
                     return;
                 }
-                var path = Path.Combine(Helpers.fileManager.ScriptsFilePath, scriptItem.id + ".bat");
+                var path = Path.Combine(Helpers.fileManager.ScriptsFilePath, name + "." + method.extension);
                 if (!File.Exists(path))
                 {
                     PrettyConsole.PrintError("Script does not exist.");
@@ -36,26 +48,22 @@ namespace FileUtilitiesCore.Managers.Commands
                 }
                 if (args.Length == 1 && (args[0].Equals("help") || args[0].Equals("h")))
                 {
-                    Console.Write(scriptItem.help);
-                    return;
-                }
-                if (scriptItem.args != null && !AreAllMatched(scriptItem.args, args))
-                {
-                    PrettyConsole.PrintError($"Invalid arguments. Expected {scriptItem.args.Length} arguments.\nexec {script} {string.Join(' ', scriptItem.args.Select(arg => "@\"" + arg + "\""))}");
-                    Console.Write(scriptItem.help);
+                    Console.Write(item.help);
                     return;
                 }
 
                 // Set up the process start information
                 var processStartInfo = new ProcessStartInfo()
                 {
-                    FileName = "cmd.exe",
-                    Arguments = $"/c \"\"{path}\" {string.Join(" ", args.Select(arg => $"\"{arg}\""))}\"",
+                    FileName = method.path,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     UseShellExecute = false,
                     CreateNoWindow = true
                 };
+                foreach(var arg in method.setup) processStartInfo.ArgumentList.Add(arg);
+                processStartInfo.ArgumentList.Add(path);
+                foreach(var arg in args) processStartInfo.ArgumentList.Add(arg);
 
                 // Start the process
                 using Process process = Process.Start(processStartInfo);
@@ -63,7 +71,9 @@ namespace FileUtilitiesCore.Managers.Commands
                 // Read the output from the process
                 string output = process.StandardOutput.ReadToEnd();
                 string errors = process.StandardError.ReadToEnd();
-                process.WaitForExit();  // Wait for the process to complete
+                
+                // Wait for the process to complete
+                process.WaitForExit();
 
                 // Output the results to the console
                 Console.WriteLine(output);
@@ -79,35 +89,7 @@ namespace FileUtilitiesCore.Managers.Commands
             }
         }
 
-        public static bool AreAllMatched(string[] patterns, string[] strings)
-        {
-            // Check if the arrays are of the same length
-            if (patterns.Length != strings.Length)
-            {
-                return false;
-            }
-
-            // Iterate through the patterns and strings arrays and match each pattern
-            for (int i = 0; i < patterns.Length; i++)
-            {
-                string pattern = patterns[i];
-                string input = strings[i];
-
-                // Check if the current input string matches the regex pattern
-                if (!Regex.IsMatch(input, pattern))
-                {
-                    return false;
-                }
-            }
-
-            // If all strings match their corresponding patterns, return true
-            return true;
-        }
-
         private static char[] specialChars = { '&', '<', '>', '|', '(', ')', '^', '"' };
-        public static bool ContainsSpecialCharacters(string input)
-        {
-            return input.IndexOfAny(specialChars) != -1;
-        }
+        public static bool ContainsSpecialCharacters(string input) => input.IndexOfAny(specialChars) != -1;
     }
 }

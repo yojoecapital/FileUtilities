@@ -43,7 +43,7 @@ namespace FileUtilitiesCore.Managers.Commands
                         if (!matchingFiles.Any()) return;
 
                         PrettyConsole.PrintList(matchingFiles);
-                        Console.Write($"Are you sure you want to copy the above items to \"{displayDest}\"? (y/n): ");
+                        Console.Write($"Are you sure you want to copy the above items into \"{displayDest}\"? (y/n): ");
                         if (!Console.ReadLine().Trim().ToLower().Equals("y")) return;
 
                         foreach (var filePath in matchingFiles)
@@ -62,7 +62,7 @@ namespace FileUtilitiesCore.Managers.Commands
                     }
                     else
                     {
-                        Console.Write($"Are you sure you want to copy the {(Helpers.IsDirectoryEmpty(source) ? "" : "* ")}directory \"{source}\" into \"{dest}\"? (y/n): ");
+                        Console.Write($"Are you sure you want to copy the {(Helpers.IsDirectoryEmpty(source) ? "" : "* ")}directory \"{source}\" to \"{dest}\"? (y/n): ");
                         if (!Console.ReadLine().Trim().ToLower().Equals("y")) return;
                         // If the source is a directory, copy all contents recursively
                         CopyDirectory(source, dest, overwrite);

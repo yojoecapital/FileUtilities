@@ -28,7 +28,7 @@ namespace FileUtilitiesCore.Managers.Commands
                 }
                 else if (Directory.Exists(source))
                 {
-                    if (!string.IsNullOrEmpty(include) || !string.IsNullOrEmpty(include))
+                    if (!string.IsNullOrEmpty(include) || !string.IsNullOrEmpty(exclude))
                     {
                         source = Path.GetFullPath(source);
                         Directory.SetCurrentDirectory(source);
