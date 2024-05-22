@@ -76,11 +76,13 @@ namespace FileUtilitiesCore.Managers.Commands
                 process.WaitForExit();
 
                 // Output the results to the console
-                Console.WriteLine(output);
+                Console.Write(output);
 
                 if (!string.IsNullOrEmpty(errors))
                 {
-                    PrettyConsole.PrintError(errors);
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write("Error: " + errors);
+                    Console.ResetColor();
                 }
             }
             catch (Exception ex)
