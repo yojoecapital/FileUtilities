@@ -2,6 +2,7 @@
 using FileUtilitiesCore.Utilities;
 using System;
 using System.Diagnostics;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace FileUtilitiesCore.Managers.Commands
@@ -75,14 +76,14 @@ namespace FileUtilitiesCore.Managers.Commands
                 // Wait for the process to complete
                 process.WaitForExit();
 
+                Console.OutputEncoding = Encoding.UTF8;
+
                 // Output the results to the console
                 Console.Write(output);
 
                 if (!string.IsNullOrEmpty(errors))
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write("Error: " + errors);
-                    Console.ResetColor();
+                    Console.Write(errors);
                 }
             }
             catch (Exception ex)
