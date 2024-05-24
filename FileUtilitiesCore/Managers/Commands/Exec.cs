@@ -76,8 +76,6 @@ namespace FileUtilitiesCore.Managers.Commands
                 // Wait for the process to complete
                 process.WaitForExit();
 
-                Console.OutputEncoding = Encoding.UTF8;
-
                 // Output the results to the console
                 Console.Write(output);
 
