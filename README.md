@@ -28,15 +28,19 @@
   - `-o`: Overwrite existing items.
   - `-i [include]`: Include glob patterns.
   - `-e [exclude]`: Exclude glob patterns.
+  - `-y`: Answer yes to prompt.
 - `fs mv [src] [dest] -r -o -i [include] -e [exclude]`: Move from `[src]` to `[dest]`.
   - `-r`: Move recursively.
   - `-o`: Overwrite existing items.
   - `-i [include]`: Include glob patterns.
   - `-e [exclude]`: Exclude glob patterns.
+  - `-y`: Answer yes to prompt.
 - `fs rm [path] -r -i [include] -e [exclude]`: Remove from `[path]`.
   - `-r`: Remove recursively.
   - `-i [include]`: Include glob patterns.
   - `-e [exclude]`: Exclude glob patterns.
+  - `-f`: Bypass the default behavior of putting the file in the recycle bin.
+  - `-y`: Answer yes to prompt.
 
 ### Rename
 

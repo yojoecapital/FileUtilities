@@ -6,14 +6,14 @@ namespace FileUtilitiesCore.Managers.Commands
     {
         public static void Command(string[] args)
         {
-            if (Helpers.GetParameters(args, 2, new string[] { "-r", "-o" }, new string[] { "-i", "-e" }, out var flags, out var strs))
+            if (Helpers.GetParameters(args, 2, new string[] { "-r", "-o", "-y" }, new string[] { "-i", "-e" }, out var flags, out var strs))
             {
-                Run(args[1], args[2], strs["-i"], strs["-e"], flags["-r"], flags["-o"]);
+                Run(args[1], args[2], strs["-i"], strs["-e"], flags["-r"], flags["-o"], flags["-y"]);
             }
             else PrettyConsole.PrintError($"Invalid arguments.");
         }
 
-        private static void Run(string source, string dest, string include, string exclude, bool recurse, bool overwrite)
+        private static void Run(string source, string dest, string include, string exclude, bool recurse, bool overwrite, bool yes)
         {
             try
             {
@@ -23,8 +23,12 @@ namespace FileUtilitiesCore.Managers.Commands
 
                 if (File.Exists(source))
                 {
-                    Console.Write($"Are you sure you want to copy the file \"{source}\" to \"{dest}\"? (y/n): ");
-                    if (!Console.ReadLine().Trim().ToLower().Equals("y")) return;
+                    if (!yes)
+                    {
+                        Console.Write($"Are you sure you want to copy the file \"{source}\" to \"{dest}\"? (y/n): ");
+                        if (!Console.ReadLine().Trim().ToLower().Equals("y")) return;
+                    }
+
                     // If the source is a file, copy directly to the destination
                     File.Copy(source, dest, overwrite);
                 }
@@ -43,8 +47,11 @@ namespace FileUtilitiesCore.Managers.Commands
                         if (!matchingFiles.Any()) return;
 
                         PrettyConsole.PrintList(matchingFiles);
-                        Console.Write($"Are you sure you want to copy the above items into \"{displayDest}\"? (y/n): ");
-                        if (!Console.ReadLine().Trim().ToLower().Equals("y")) return;
+                        if (!yes)
+                        {
+                            Console.Write($"Are you sure you want to copy the above items into \"{displayDest}\"? (y/n): ");
+                            if (!Console.ReadLine().Trim().ToLower().Equals("y")) return;
+                        }
 
                         foreach (var filePath in matchingFiles)
                         {
@@ -62,8 +69,12 @@ namespace FileUtilitiesCore.Managers.Commands
                     }
                     else
                     {
-                        Console.Write($"Are you sure you want to copy the {(Helpers.IsDirectoryEmpty(source) ? "" : "* ")}directory \"{source}\" to \"{dest}\"? (y/n): ");
-                        if (!Console.ReadLine().Trim().ToLower().Equals("y")) return;
+                        if (!yes)
+                        {
+                            Console.Write($"Are you sure you want to copy the {(Helpers.IsDirectoryEmpty(source) ? "" : "* ")}directory \"{source}\" to \"{dest}\"? (y/n): ");
+                            if (!Console.ReadLine().Trim().ToLower().Equals("y")) return;
+                        }
+                        
                         // If the source is a directory, copy all contents recursively
                         CopyDirectory(source, dest, overwrite);
                     }
