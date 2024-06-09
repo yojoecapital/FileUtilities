@@ -29,20 +29,20 @@ namespace FileUtilitiesCore
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("cp"),
                 Copy.Command,
-                "cp [src] [dest] -r -o -i [include] -e [exclude]",
-                "Copy from [src] to [dest]. Use -r to copy recursively. Use -o to overwrite existing items. Use -i [include] to include glob. Use -e [exclude] to exclude glob."
+                "cp [src] [dest] -r -o -y -i [include] -e [exclude]",
+                "Copy from [src] to [dest]. Use -r to copy recursively. Use -o to overwrite existing items. Use -y to skip the prompt. Use -i [include] to include glob. Use -e [exclude] to exclude glob."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("mv"),
                 Move.Command,
-                "mv [src] [dest] -r -o -i [include] -e [exclude]",
-                "Move from [src] to [dest]. Use -r to move recursively. Use -o to overwrite existing items. Use -i [include] to include glob. Use -e [exclude] to exclude glob."
+                "mv [src] [dest] -r -o -y -i [include] -e [exclude]",
+                "Move from [src] to [dest]. Use -r to move recursively. Use -o to overwrite existing items. Use -y to skip the prompt. Use -i [include] to include glob. Use -e [exclude] to exclude glob."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("rm"),
                 Remove.Command,
-                "rm [path] -r -i [include] -e [exclude]",
-                "Remove from [path]. Use -r to remove recursively. Use -i [include] to include glob. Use -e [exclude] to exclude glob."
+                "rm [path] -r -f -y -i [include] -e [exclude]",
+                "Remove from [path]. Use -r to remove recursively. Use -f to bypass recycle bin. Use -y to skip the prompt. Use -i [include] to include glob. Use -e [exclude] to exclude glob."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("nm"),
