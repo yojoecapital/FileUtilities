@@ -41,7 +41,7 @@ namespace FileUtilitiesCore.Managers.Commands
                         // If using a pattern then we'll filter
                         var option = recurse ? System.IO.SearchOption.AllDirectories : System.IO.SearchOption.TopDirectoryOnly;
 
-                        // Find files and directories matching the pattern
+                        // Find files matching the pattern
                         var files = Directory.GetFiles(source, "*", option);
 
                         var matchingFiles = Helpers.Filter(files.Select(path => Path.GetRelativePath(source, path)), include, exclude);
@@ -50,7 +50,7 @@ namespace FileUtilitiesCore.Managers.Commands
                         if (!yes)
                         {
                             PrettyConsole.PrintList(matchingFiles);
-                            Console.Write($"Are you sure you want to remove the above items? (y/n): ");
+                            Console.Write($"Are you sure you want to remove the above files? (y/n): ");
                             if (!Console.ReadLine().Trim().ToLower().Equals("y")) return;
                         }
 
@@ -76,7 +76,7 @@ namespace FileUtilitiesCore.Managers.Commands
                             if (!Console.ReadLine().Trim().ToLower().Equals("y")) return;
                         }
 
-                        if (force) Directory.Delete(source);
+                        if (force) Directory.Delete(source, true);
                         else FileSystem.DeleteDirectory(source, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
                     }
                 }

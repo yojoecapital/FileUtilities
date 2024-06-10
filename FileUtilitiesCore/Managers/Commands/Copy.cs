@@ -49,7 +49,7 @@ namespace FileUtilitiesCore.Managers.Commands
                         PrettyConsole.PrintList(matchingFiles);
                         if (!yes)
                         {
-                            Console.Write($"Are you sure you want to copy the above items into \"{displayDest}\"? (y/n): ");
+                            Console.Write($"Are you sure you want to copy the above files into \"{displayDest}\"? (y/n): ");
                             if (!Console.ReadLine().Trim().ToLower().Equals("y")) return;
                         }
 
