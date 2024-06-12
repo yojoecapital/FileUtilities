@@ -8,6 +8,7 @@ namespace FileUtilitiesCore
         static void Main(string[] args)
         {
             Repl repl = new();
+            repl.AddDescription("ConvertFrom-Json", "Note: You can use this PowerShell command to parse JSON output.");
             repl.AddCommand(
                 args => args.Length == 1 && args[0].ToLower().Equals("cd"),
                 Helpers.Cd,
