@@ -27,6 +27,8 @@ namespace FileUtilitiesCore.Managers.Commands
                     if (string.IsNullOrEmpty(include)) include = "**";
                     items = Helpers.Filter(items, include, exclude);
                 }
+                var currentDir = Directory.GetCurrentDirectory();
+                items = items.Select(path => Path.GetRelativePath(currentDir, path));
                 if (items.Count() < Helpers.fileManager.Settings.resultsPerPage) PrettyConsole.PrintList(items);
                 else PrettyConsole.PrintList(items, Helpers.fileManager.Settings.resultsPerPage);
             }
