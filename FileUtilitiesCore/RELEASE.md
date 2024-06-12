@@ -1,4 +1,8 @@
-# Release Notes - Version [2.1.1]
+# Release Notes - Version [2.1.2]
+
+- fixed a bug where the default scripts location was the working directory of the program
+- now the default scripts location is `null` in the settings JSON and it points to a `scripts` directory where the executable is saved
+- use a full file path to set a custom location  
 
 ## Commands
 
@@ -27,19 +31,19 @@
   - `-o`: Overwrite existing items.
   - `-i [include]`: Include glob patterns.
   - `-e [exclude]`: Exclude glob patterns.
-  - `-y`: Answer yes to prompt. ✨
+  - `-y`: Answer yes to prompt. 
 - `fs mv [src] [dest] -r -o -i [include] -e [exclude]`: Move from `[src]` to `[dest]`.
   - `-r`: Move recursively.
   - `-o`: Overwrite existing items.
   - `-i [include]`: Include glob patterns.
   - `-e [exclude]`: Exclude glob patterns.
-  - `-y`: Answer yes to prompt. ✨
+  - `-y`: Answer yes to prompt. 
 - `fs rm [path] -r -i [include] -e [exclude]`: Remove from `[path]`.
   - `-r`: Remove recursively.
   - `-i [include]`: Include glob patterns.
   - `-e [exclude]`: Exclude glob patterns.
-  - `-f`: Bypass the default behavior of putting the file in the recycle bin. ✨
-  - `-y`: Answer yes to prompt. ✨
+  - `-f`: Bypass the default behavior of putting the file in the recycle bin. 
+  - `-y`: Answer yes to prompt. 
 
 ### Rename
 

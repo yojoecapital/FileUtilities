@@ -1,4 +1,5 @@
 ﻿using CliFramework;
+using FileUtilitiesCore.Managers.Commands;
 using FileUtilitiesCore.Utilities;
 using Newtonsoft.Json;
 
@@ -33,7 +34,7 @@ namespace ArabizeCore.Managers
 
         public string ScriptsFilePath
         {
-            get => Settings?.scriptsPath ?? "scripts";
+            get => Helpers.PreprocessEnvironmentVariables(Settings?.scriptsPath ?? Path.Combine(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "scripts"));
         }
 
         public ScriptItem GetScriptItem(string name)

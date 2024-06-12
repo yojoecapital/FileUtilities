@@ -1,6 +1,6 @@
 {
   "resultsPerPage": 15,
-  "scriptsPath": "scripts",
+  "scriptsPath": null,
   "endBlock":  "</script>",
   "methods": {
     "cmd": {
