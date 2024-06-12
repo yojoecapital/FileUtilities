@@ -1,5 +1,6 @@
 # Release Notes - Version [2.1.2]
 
+- `fs info` now gives the full path as well 
 - fixed a bug where the default scripts location was the working directory of the program
 - now the default scripts location is `null` in the settings JSON and it points to a `scripts` directory where the executable is saved
 - use a full file path to set a custom location  
