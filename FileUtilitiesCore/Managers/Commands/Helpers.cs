@@ -39,6 +39,7 @@ namespace FileUtilitiesCore.Managers.Commands
                 var attributes = File.GetAttributes(args[1]);
                 var json = JsonConvert.SerializeObject(new
                 {
+                    Path = Path.GetFullPath(args[1]),
                     Attributes = attributes.ToString(),
                     Created = Directory.GetCreationTime(args[1]),
                     LastAccessTime = Directory.GetLastAccessTime(args[1]),
