@@ -108,6 +108,12 @@ namespace FileUtilitiesCore
                 "Lists the available scripts."
             );
             repl.AddCommand(
+                args => args.Length == 3 && args[0].ToLower().Equals("open") && args[1].ToLower().Equals("script"),
+                Other.OpenScript,
+                "open script [name]",
+                "Opens the file for a script item."
+            );
+            repl.AddCommand(
                 args => args.Length == 1 && (args[0].ToLower().Equals("open") || args[0].ToLower().Equals("o")),
                 Other.OpenSettings,
                 "open (o)",

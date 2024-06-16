@@ -1,4 +1,5 @@
-﻿using CliFramework;
+﻿using System.Diagnostics;
+using CliFramework;
 using FileUtilitiesCore.Managers.Commands;
 using FileUtilitiesCore.Utilities;
 using Newtonsoft.Json;
@@ -59,6 +60,19 @@ namespace FileUtilitiesCore.Managers
             var scriptPath = Path.Combine(ScriptsFilePath, name + "." + Settings.methods[item.exe].extension);
             if (File.Exists(itemPath)) File.Delete(itemPath);
             if (File.Exists(scriptPath)) File.Delete(scriptPath);
+        }
+
+        public void OpenScriptItem(string name, ScriptItem item)
+        {
+            var itemPath = Path.Combine(ScriptsFilePath, name + ".json");
+            var scriptPath = Path.Combine(ScriptsFilePath, name + "." + Settings.methods[item.exe].extension);
+            ProcessStartInfo psi = new()
+            {
+                FileName = scriptPath,
+                UseShellExecute = true
+            };
+            Process.Start(psi);
+            Console.WriteLine(scriptPath);
         }
     }
 }

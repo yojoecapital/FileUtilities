@@ -140,6 +140,17 @@ namespace FileUtilitiesCore.Managers.Commands
             Console.WriteLine(Path.GetFullPath(path));
         }
 
+        public static void OpenScript(string[] args)
+        {
+            var item = Helpers.fileManager.GetScriptItem(args[2]);
+            if (item == null) 
+            {
+                PrettyConsole.PrintError("Could not parse script item JSON file.");
+                return;
+            }
+            Helpers.fileManager.OpenScriptItem(args[2], item);
+        }
+
 
         public static void ListScripts(string[] _)
         {

@@ -78,6 +78,7 @@
 - `fs exec [name] [args...]`: Execute a script item.
 - `fs make script [name]`: Steps to make a new script item.
 - `fs remove script [name]`: Remove a script item.
+- `fs open script [name]`: Opens the file for a script item.
 - `fs dir scripts -o`: Prints the script items directory.
   - `-o`: Open the directory.
 - `fs list scripts`: Lists the available scripts.
