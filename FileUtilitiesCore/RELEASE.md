@@ -1,6 +1,6 @@
 # Release Notes - Version [3.0.0]
 
-- `fs cp`, `fs mv`, and `fs rm` allow you use multiple sources.
+- `fs cp`, `fs mv`, `fs rm`, and `fs touch` allow you use multiple sources.
   - For example, using `fs mv a b c d` on directories `a`, `b`, `c`, and `d` will move (by merging) `a`, `b`, and `c` to`d`.
 
 - You can use `*` in the `[dest]` argument of `fs cp` and `fs mv` to use the same file name of the corresponding source.
@@ -65,8 +65,8 @@
 
 ### Make Files and Directories
 
-- `fs mkdir [dir]`: Make a new directory at `[dir]`.
-- `fs touch [file]`: Update the file at `[file]` if it exists. Otherwise, create it.
+- `fs mkdir [dirs...]`: Make new directories at `[dir...]`.
+- `fs touch [files...]`: Update the files at `[files...]` if it exists. Otherwise, create it.
 
 ### Metadata ✨
 

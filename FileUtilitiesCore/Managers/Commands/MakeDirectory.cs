@@ -8,9 +8,9 @@ namespace FileUtilitiesCore.Managers.Commands
         {
             try
             {
-                if (Arg.Parse(args.Skip(1), 1, out var mandatoryResults))
+                if (Arg.Parse(args.Skip(1), 0, true, out var _, out var spreadResults))
                 {
-                    Directory.CreateDirectory(mandatoryResults[0]);
+                    foreach (var path in spreadResults) Directory.CreateDirectory(path);
                 }
                 else PrettyConsole.PrintError("Invalid arguments.");
             }

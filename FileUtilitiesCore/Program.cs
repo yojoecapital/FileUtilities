@@ -56,14 +56,14 @@ namespace FileUtilitiesCore
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("mkdir"),
                 MakeDirectory.Command,
-                "mkdir [dir]",
-                "Make a new directory at [dir]."
+                "mkdir [dirs...]",
+                "Make new directories at [dirs...]."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("touch"),
                 Touch.Command,
-                "touch [file]",
-                "Update the file at [file] if it exists.\nOtherwise, it creates it."
+                "touch [files...]",
+                "Update the files at [files...] if it exists. Otherwise, it creates it."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("info"),
