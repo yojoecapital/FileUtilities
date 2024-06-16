@@ -4,7 +4,7 @@
     {
         public string scriptsPath = "scripts";
         public string endBlock = "</script>";
-        public int dialogueSize = 100;
+        public long dialogueSize = 100;
         public Dictionary<string, ExecutionMethod> methods = new();
     }
 
