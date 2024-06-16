@@ -45,8 +45,8 @@ namespace FileUtilitiesCore.Managers.Commands
                     foreach (var op in fileOperations) Console.WriteLine($"{op}");
                     foreach (var op in dirOperations) 
                     {
-                        if (Helpers.IsDirectoryEmpty(op)) Console.WriteLine($"{op}\\");
-                        else Console.WriteLine($"{op}\\*");
+                        if (Helpers.IsDirectoryEmpty(op)) Console.WriteLine($"Helpers.EnsureBackslash(op)");
+                        else Console.WriteLine($"Helpers.EnsureBackslash(op)*");
                     }
                 }
                 else 
@@ -54,8 +54,8 @@ namespace FileUtilitiesCore.Managers.Commands
                     foreach (var op in fileOperations) Console.WriteLine($"{op} → Recycle Bin");
                     foreach (var op in dirOperations) 
                     {
-                        if (Helpers.IsDirectoryEmpty(op)) Console.WriteLine($"{op}\\ → Recycle Bin");
-                        else Console.WriteLine($"{op}\\* → Recycle Bin");
+                        if (Helpers.IsDirectoryEmpty(op)) Console.WriteLine($"Helpers.EnsureBackslash(op) → Recycle Bin");
+                        else Console.WriteLine($"Helpers.EnsureBackslash(op)* → Recycle Bin");
                     }
                 }
                 Console.Write("Are you sure you want to remove the above items? (y/n): ");

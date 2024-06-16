@@ -57,8 +57,8 @@ namespace FileUtilitiesCore.Managers.Commands
                 foreach (var op in fileOperations) Console.WriteLine($"{op.Item1} → {op.Item2}");
                 foreach (var op in dirOperations) 
                 {
-                    if (Helpers.IsDirectoryEmpty(op.Item1)) Console.WriteLine($"{op.Item1}\\ → {op.Item2}\\");
-                    else Console.WriteLine($"{op.Item1}\\* → {op.Item2}\\*");
+                    if (Helpers.IsDirectoryEmpty(op.Item1)) Console.WriteLine($"{Helpers.EnsureBackslash(op.Item1)} → {Helpers.EnsureBackslash(op.Item2)}");
+                    else Console.WriteLine($"{Helpers.EnsureBackslash(op.Item1)}* → {Helpers.EnsureBackslash(op.Item2)}*");
                 }
                 Console.Write("Are you sure you want to copy the above items? (y/n): ");
                 if (!Console.ReadLine().Trim().ToLower().Equals("y")) return;

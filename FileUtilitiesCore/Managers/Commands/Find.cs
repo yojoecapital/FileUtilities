@@ -28,7 +28,7 @@ namespace FileUtilitiesCore.Managers.Commands
                 return;
             }
             var option = recurse ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
-            var items = Directory.GetFiles(dir, "*", option).Select(path => Path.GetRelativePath(dir, path)).Union(Directory.GetDirectories(dir, "*", option).Select(path => Path.GetRelativePath(dir, path) + "\\"));
+            var items = Directory.GetFiles(dir, "*", option).Select(path => Path.GetRelativePath(dir, path)).Union(Directory.GetDirectories(dir, "*", option).Select(path => Helpers.EnsureBackslash(Path.GetRelativePath(dir, path))));
             if (!string.IsNullOrEmpty(include) || !string.IsNullOrEmpty(exclude))
             {
                 if (string.IsNullOrEmpty(include)) include = "**";

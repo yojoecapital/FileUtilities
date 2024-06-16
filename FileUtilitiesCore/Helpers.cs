@@ -59,6 +59,12 @@ namespace FileUtilitiesCore.Managers.Commands
 
         public static string GetNormalizedPath(string path) => Path.GetRelativePath(Directory.GetCurrentDirectory(), Path.GetFullPath(path));
 
+        public static string EnsureBackslash(string path)
+        {
+            if (!path.EndsWith("\\") && !path.EndsWith("/")) path += "\\";
+            return path;
+        }
+
         public static IEnumerable<string> Filter(IEnumerable<string> paths,  string include, string exclude)
         {
             var matcher = new Matcher();
