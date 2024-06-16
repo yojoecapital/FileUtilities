@@ -10,7 +10,7 @@ namespace FileUtilitiesCore.Managers.Commands
             {
                 if (Arg.Parse(args.Skip(1), 1, out var mandatoryResults))
                 {
-                    Directory.CreateDirectory(args[0]);
+                    Directory.CreateDirectory(mandatoryResults[0]);
                 }
                 else PrettyConsole.PrintError("Invalid arguments.");
             }

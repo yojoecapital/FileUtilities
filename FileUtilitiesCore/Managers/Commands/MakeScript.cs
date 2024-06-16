@@ -12,7 +12,7 @@ namespace FileUtilitiesCore.Managers.Commands
             {
                 if (Arg.Parse(args.Skip(2), 1, out var mandatoryResults))
                 {
-                    Run(args[0]);
+                    Run(mandatoryResults[0]);
                 }
                 else PrettyConsole.PrintError("Invalid arguments.");
             }
