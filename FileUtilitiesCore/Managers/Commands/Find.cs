@@ -6,35 +6,36 @@ namespace FileUtilitiesCore.Managers.Commands
     {
         public static void Command(string[] args)
         {
-            if (Helpers.GetParameters(args, 1, new string[] { "-r" }, new string[] { "-i", "-e" }, out var flags, out var strs))
-                Run(args[1], strs["-i"], strs["-e"], flags["-r"]);
-            else PrettyConsole.PrintError($"Invalid arguments.");
-        }
-
-        private static void Run(string directory, string include, string exclude, bool recurse)
-        {
             try
             {
-                if (!Directory.Exists(directory))
+                if (Arg.Parse(args.Skip(1), 1, new [] { "-r", "-cd" }, new [] { "-i", "-e" }, out var mandatoryResults, out var flagResults, out var stringResults))
                 {
-                    PrettyConsole.PrintError($"Directory \"{directory}\" does not exist.");
-                    return;
+                    Run(mandatoryResults[0], stringResults["-i"], stringResults["-e"], flagResults["-r"], flagResults["-cd"]);
                 }
-                var option = recurse ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
-                var items = Directory.GetFiles(directory, "*", option).Select(path => Path.GetRelativePath(directory, path)).Union(Directory.GetDirectories(directory, "*", option).Select(path => Path.GetRelativePath(directory, path) + "\\"));
-                if (!string.IsNullOrEmpty(include) || !string.IsNullOrEmpty(exclude))
-                {
-                    if (string.IsNullOrEmpty(include)) include = "**";
-                    items = Helpers.Filter(items, include, exclude);
-                }
-                items = items.Select(path => Path.Combine(directory, path));
-                if (items.Count() < Helpers.fileManager.Settings.resultsPerPage) PrettyConsole.PrintList(items);
-                else PrettyConsole.PrintList(items, Helpers.fileManager.Settings.resultsPerPage);
+                else PrettyConsole.PrintError("Invalid arguments.");
             }
             catch (Exception ex)
             {
-                PrettyConsole.PrintError($"Could not list segments.\n{ex.Message}");
+                PrettyConsole.PrintError(ex.Message);
             }
+        }
+
+        public static void Run(string dir, string include, string exclude, bool recurse, bool cd)
+        {
+            if (!Directory.Exists(dir))
+            {
+                PrettyConsole.PrintError($"Directory '{dir}' does not exist.");
+                return;
+            }
+            var option = recurse ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+            var items = Directory.GetFiles(dir, "*", option).Select(path => Path.GetRelativePath(dir, path)).Union(Directory.GetDirectories(dir, "*", option).Select(path => Path.GetRelativePath(dir, path) + "\\"));
+            if (!string.IsNullOrEmpty(include) || !string.IsNullOrEmpty(exclude))
+            {
+                if (string.IsNullOrEmpty(include)) include = "**";
+                items = Helpers.Filter(items, include, exclude);
+            }
+            if (cd) items = items.Select(path => Helpers.GetNormalizedPath(Path.Combine(dir, path)));
+            PrettyConsole.PrintList(items);
         }
     }
 }

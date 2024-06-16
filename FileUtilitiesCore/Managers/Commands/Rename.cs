@@ -6,11 +6,18 @@ namespace FileUtilitiesCore.Managers.Commands
     {
         public static void Command(string[] args)
         {
-            if (Helpers.GetParameters(args, 2, Array.Empty<string>(), Array.Empty<string>(), out var _, out var _))
+            try
             {
-                Run(args[1], args[2]);
+                if (Arg.Parse(args.Skip(1), 2, out var mandatoryResults))
+                {
+                    Run(args[0], args[1]);
+                }
+                else PrettyConsole.PrintError("Invalid arguments.");
             }
-            else PrettyConsole.PrintError($"Invalid arguments.");
+            catch (Exception ex)
+            {
+                PrettyConsole.PrintError(ex.Message);
+            }
         }
 
         public static void Run(string path, string name)
@@ -21,38 +28,31 @@ namespace FileUtilitiesCore.Managers.Commands
 
             if (!isValid)
             {
-                PrettyConsole.PrintError($"\"{name}\" is not a valid file name.");
+                PrettyConsole.PrintError($"'{name}' is not a valid file name.");
                 return;
             }
-            try
+            if (File.Exists(path))
             {
-                if (File.Exists(path))
-                {
-                    // If the path is a file, construct the new file path
-                    string directory = Path.GetDirectoryName(path);
-                    string newFilePath = Path.Combine(directory ?? string.Empty, name);
+                // If the path is a file, construct the new file path
+                string directory = Path.GetDirectoryName(path);
+                string newFilePath = Path.Combine(directory ?? string.Empty, name);
 
-                    // Rename the file by moving it to the new file path
-                    File.Move(path, newFilePath);
-                }
-                else if (Directory.Exists(path))
-                {
-                    // If the path is a directory, construct the new directory path
-                    string parentDirectory = Path.GetDirectoryName(path);
-                    string newDirectoryPath = Path.Combine(parentDirectory ?? string.Empty, name);
-
-                    // Rename the directory by moving it to the new directory path
-                    Directory.Move(path, newDirectoryPath);
-                }
-                else
-                {
-                    // Handle the case where the file or directory does not exist
-                    PrettyConsole.PrintError($"\"{path}\" does not exist.");
-                }
+                // Rename the file by moving it to the new file path
+                File.Move(path, newFilePath);
             }
-            catch (Exception ex)
+            else if (Directory.Exists(path))
             {
-                PrettyConsole.PrintError($"Could not rename.\n{ex.Message}");
+                // If the path is a directory, construct the new directory path
+                string parentDirectory = Path.GetDirectoryName(path);
+                string newDirectoryPath = Path.Combine(parentDirectory ?? string.Empty, name);
+
+                // Rename the directory by moving it to the new directory path
+                Directory.Move(path, newDirectoryPath);
+            }
+            else
+            {
+                // Handle the case where the file or directory does not exist
+                PrettyConsole.PrintError($"'{path}' does not exist.");
             }
         }
     }

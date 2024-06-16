@@ -2,9 +2,9 @@
 {
     internal class Settings
     {
-        public int resultsPerPage = 15;
         public string scriptsPath = "scripts";
-        public string endBlock = "</bat>";
+        public string endBlock = "</script>";
+        public int dialogueSize = 100;
         public Dictionary<string, ExecutionMethod> methods = new();
     }
 

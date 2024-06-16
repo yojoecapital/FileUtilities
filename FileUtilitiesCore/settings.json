@@ -1,5 +1,5 @@
 {
-  "resultsPerPage": 15,
+  "dialogueSize": 100,
   "scriptsPath": null,
   "endBlock":  "</script>",
   "methods": {

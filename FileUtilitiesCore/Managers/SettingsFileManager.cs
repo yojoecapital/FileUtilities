@@ -3,7 +3,7 @@ using FileUtilitiesCore.Managers.Commands;
 using FileUtilitiesCore.Utilities;
 using Newtonsoft.Json;
 
-namespace ArabizeCore.Managers
+namespace FileUtilitiesCore.Managers
 {
     internal class SettingsFileManager : FileManager
     {

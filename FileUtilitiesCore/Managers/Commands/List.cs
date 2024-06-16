@@ -6,29 +6,17 @@ namespace FileUtilitiesCore.Managers.Commands
     {
         public static void Command(string[] args)
         {
-            if (Helpers.GetParameters(args, 0, new string[] { "-r" }, new string[] { "-i", "-e" }, out var flags, out var strs))
-                Run(strs["-i"], strs["-e"], flags["-r"]);
-            else PrettyConsole.PrintError($"Invalid arguments.");
-        }
-
-        private static void Run(string include, string exclude, bool recurse)
-        {
             try
             {
-                var option = recurse ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
-                var currentDir = Directory.GetCurrentDirectory();
-                var items = Directory.GetFiles(currentDir, "*", option).Select(path => Path.GetRelativePath(currentDir, path)).Union(Directory.GetDirectories(currentDir, "*", option).Select(path => Path.GetRelativePath(currentDir, path) + "\\"));
-                if (!string.IsNullOrEmpty(include) || !string.IsNullOrEmpty(exclude))
+                if (Arg.Parse(args.Skip(1), 0, new [] { "-r" }, new [] { "-i", "-e" }, out var mandatoryResults, out var flagResults, out var stringResults))
                 {
-                    if (string.IsNullOrEmpty(include)) include = "**";
-                    items = Helpers.Filter(items, include, exclude);
+                    Find.Run(".", stringResults["-i"], stringResults["-e"], flagResults["-r"], true);
                 }
-                if (items.Count() < Helpers.fileManager.Settings.resultsPerPage) PrettyConsole.PrintList(items);
-                else PrettyConsole.PrintList(items, Helpers.fileManager.Settings.resultsPerPage);
+                else PrettyConsole.PrintError("Invalid arguments.");
             }
             catch (Exception ex)
             {
-                PrettyConsole.PrintError($"Could not list segments.\n{ex.Message}");
+                PrettyConsole.PrintError(ex.Message);
             }
         }
     }

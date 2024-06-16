@@ -1,50 +1,62 @@
-# Release Notes - Version [2.1.2]
+# Release Notes - Version [3.0.0]
 
-- `fs info` now gives the full path as well 
-- fixed a bug where the default scripts location was the working directory of the program
-- now the default scripts location is `null` in the settings JSON and it points to a `scripts` directory where the executable is saved
-- use a full file path to set a custom location  
+- `fs cp`, `fs mv`, and `fs rm` allow you use multiple sources.
+  - For example, using `fs mv a b c d` on directories `a`, `b`, `c`, and `d` will move (by merging) `a`, `b`, and `c` to`d`.
+
+- You can use `*` in the `[dest]` argument of `fs cp` and `fs mv` to use the same file name of the corresponding source.
+  - For example, using `fs cp a.txt b\*` will copy `a.txt` to `b\a.txt`.
+
+- `fs info` and `fs size` now gives information and size for directories as well.
+- `fs rm` will now show a dialogue box if the file or directory size is greater than the MB specified in `"dialogueSize"` of the settings JSON.
+- `fs` no longer uses pagination. I prefer to pipe to PowerShell's `more` command.
+  - `"resultsPerPage"` was removed and will be ignored from the settings JSON.
+
 
 ## Commands
 
 ### Default
 
+- `fs quit (q) (exit)`: Exit the program.
 - `fs clear (cls)`: Clear the console screen.
 - `fs help (h)`: Display the help message.
+- `fs cd`: Prints the current directory. This *does not* set the current directory.
 
 ### List and Filter Segments
 
-- `fs cd`: Prints the current directory. This *does not* set the current directory. 
 - `fs ls -r -i [include] -e [exclude]`: List segments of the current directory.
   - `-r`: Display recursively.
   - `-i [include]`: Include glob patterns.
   - `-e [exclude]`: Exclude glob patterns.
-- `fs find [dir] -r -i [include] -e [exclude]`: List segments of `[dir]`.
+- `fs find [dir] -r -cd -i [include] -e [exclude]`: List segments of `[dir]`.
   - `-r`: Display recursively.
+  - `-cd`:  Display relative to the current directory.
   - `-i [include]`: Include glob patterns.
   - `-e [exclude]`: Exclude glob patterns.
 
 ### Copy, Move, and Remove
 
-- Note that when globs or the recursive flag are included, they will be considered if the `[src]` is a directory. Moreover, they will only affect *files* (i.e. directories will not be removed).
-- `fs cp [src] [dest] -r -o -i [include] -e [exclude]`: Copy from `[src]` to `[dest]`.
+- Note that you can include multiple sources in `[src...]`.
+- Note that when globs or the recursive flag are included, they will be considered if a source is a directory. Moreover, they will only affect *files* (i.e., directories will not be removed).
+- `fs cp [src...] [dest] -r -o -y -i [include] -e [exclude]`: Copy from `[src...]` to `[dest]`.
+  - Use `*` in `[dest]` as a macro for the file name of a source.
   - `-r`: Copy recursively.
   - `-o`: Overwrite existing items.
+  - `-y`: Answer yes to prompt.
   - `-i [include]`: Include glob patterns.
   - `-e [exclude]`: Exclude glob patterns.
-  - `-y`: Answer yes to prompt. 
-- `fs mv [src] [dest] -r -o -i [include] -e [exclude]`: Move from `[src]` to `[dest]`.
+- `fs mv [src...] [dest] -r -o -y -i [include] -e [exclude]`: Move from `[src...]` to `[dest]`.
+  - Use `*` in `[dest]` as a macro for the file name of a source.
   - `-r`: Move recursively.
   - `-o`: Overwrite existing items.
+  - `-y`: Answer yes to prompt.
   - `-i [include]`: Include glob patterns.
   - `-e [exclude]`: Exclude glob patterns.
-  - `-y`: Answer yes to prompt. 
-- `fs rm [path] -r -i [include] -e [exclude]`: Remove from `[path]`.
+- `fs rm [path...] -r -f -y -i [include] -e [exclude]`: Remove from `[src...]`.
   - `-r`: Remove recursively.
+  - `-f`: Bypass the default behavior of putting the file in the recycle bin.
+  - `-y`: Answer yes to prompt.
   - `-i [include]`: Include glob patterns.
   - `-e [exclude]`: Exclude glob patterns.
-  - `-f`: Bypass the default behavior of putting the file in the recycle bin. 
-  - `-y`: Answer yes to prompt. 
 
 ### Rename
 
@@ -60,11 +72,11 @@
 - `fs info [file]`: Display the file information at `[file]`.
 - `fs size [file]`: Display the file size in bytes at `[file]`.
 
-### Scripting 
+### Scripting
 
-- `fs exec [name] [...args]`: Execute a script item.
+- `fs exec [name] [args...]`: Execute a script item.
 - `fs make script [name]`: Steps to make a new script item.
-- `fs remove script [name]`: Remove `[script]`.
+- `fs remove script [name]`: Remove a script item.
 - `fs dir scripts -o`: Prints the script items directory.
   - `-o`: Open the directory.
 - `fs list scripts`: Lists the available scripts.
@@ -77,29 +89,35 @@
 
 This is an example of how the settings JSON may look like. You can use `fs open` to open the JSON.
 
-- `"resultsPerPage"`: the number of result displayed in actions like `ls` or `find`.
-- `"scriptsPath"`: the path to the the script items. You can use this to save the scripts to a different directory such as a shared directory. Make sure the directory is used exclusively for script items.
-- `"endBlock"`: this is the token to end a script when running `make script [name]`.
-- `"methods"`: these are methods used to execute a script item.
-  - `"path"`: what should execute the script.
-  - `"setup"`: pre-arguments such as `\c` for the `cmd.exe`.
-  - `"extension"`: what file extension should be used when saving the script item's file.
-
 ```json
 {
-  "resultsPerPage": 15,
+  "dialogueSize": 100,
   "scriptsPath": "scripts",
   "endBlock":  "</script>",
   "methods": {
     "cmd": {
       "path": "cmd.exe",
-      "prefix": ["/c"],
-      "extension": "bat" 
+      "setup": ["/c"],
+      "extension": "bat"
     },
     "ps": {
       "path": "pwsh.exe",
-      "extension": "ps1" 
+      "extension": "ps1"
+    },
+    "py": {
+      "path": "python.exe",
+      "extension": "py"
     }
   }
 }
 ```
+
+### JSON Fields
+
+- `"dialogueSize"`: Specifies the minimum size in MB for when `fs rm` should use the dialogue box. This will not be done if `-f` is passed.
+- `"scriptsPath"`: The path to the script items. You can use this to save the scripts to a different directory, such as a shared directory. Make sure the directory is used exclusively for script items.
+- `"endBlock"`: This is the token to end a script when running `make script [name]`.
+- `"methods"`: These are methods used to execute a script item.
+  - `"path"`: What should execute the script.
+  - `"setup"`: Pre-arguments such as `/c` for `cmd.exe`.
+  - `"extension"`: What file extension should be used when saving the script item's file.

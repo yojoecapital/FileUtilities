@@ -7,11 +7,13 @@ namespace FileUtilitiesCore
     {
         static void Main(string[] args)
         {
-            Repl repl = new();
-            repl.AddDescription("ConvertFrom-Json", "Note: You can use this PowerShell command to parse JSON output.");
+            Repl repl = new()
+            {
+                pagifyHelp = int.MaxValue
+            };
             repl.AddCommand(
-                args => args.Length == 1 && args[0].ToLower().Equals("cd"),
-                Helpers.Cd,
+                args => args.Length == 2 && (args[0].Equals("help") || args[0].Equals("h")) && args[1].Equals("-j"),
+                Other.Cd,
                 "cd",
                 "Prints the current directory."
             );
@@ -19,31 +21,31 @@ namespace FileUtilitiesCore
                 args => args.Length > 0 && args[0].ToLower().Equals("ls"),
                 List.Command,
                 "ls -r -i [include] -e [exclude]",
-                "List segements of current directory. Use -r to display recursively. Use -i [include] to include glob. Use -e [exclude] to exclude glob."
+                "List segements of current directory.\nUse -r to display recursively.\nUse -i [include] to include glob.\nUse -e [exclude] to exclude glob."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("find"),
                 Find.Command,
-                "find [dir] -r -i [include] -e [exclude]",
-                "List segements of [dir]. Use -r to display recursively. Use -i [include] to include glob. Use -e [exclude] to exclude glob."
+                "find [dir] -r -d -i [include] -e [exclude]",
+                "List segements of [dir].\nUse -r to display recursively.\nUse -cd to display relative to the current directory.\nUse -i [include] to include glob.\nUse -e [exclude] to exclude glob."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("cp"),
                 Copy.Command,
-                "cp [src] [dest] -r -o -y -i [include] -e [exclude]",
-                "Copy from [src] to [dest]. Use -r to copy recursively. Use -o to overwrite existing items. Use -y to skip the prompt. Use -i [include] to include glob. Use -e [exclude] to exclude glob."
+                "cp [src...] [dest] -r -o -y -i [include] -e [exclude]",
+                "Copy from [src...] to [dest].\nUse * in [dest] as a macro for the file name of [src].\nUse -r to copy recursively.\nUse -o to overwrite existing items.\nUse -y to skip the prompt.\nUse -i [include] to include glob.\nUse -e [exclude] to exclude glob."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("mv"),
                 Move.Command,
-                "mv [src] [dest] -r -o -y -i [include] -e [exclude]",
-                "Move from [src] to [dest]. Use -r to move recursively. Use -o to overwrite existing items. Use -y to skip the prompt. Use -i [include] to include glob. Use -e [exclude] to exclude glob."
+                "mv [src...] [dest] -r -o -y -i [include] -e [exclude]",
+                "Move from [src...] to [dest].\nUse * in [dest] as a macro for the file name of [src].\nUse -r to move recursively.\nUse -o to overwrite existing items.\nUse -y to skip the prompt.\nUse -i [include] to include glob.\nUse -e [exclude] to exclude glob."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("rm"),
                 Remove.Command,
-                "rm [path] -r -f -y -i [include] -e [exclude]",
-                "Remove from [path]. Use -r to remove recursively. Use -f to bypass recycle bin. Use -y to skip the prompt. Use -i [include] to include glob. Use -e [exclude] to exclude glob."
+                "rm [path...] -r -f -y -i [include] -e [exclude]",
+                "Remove from [path...].\nUse -r to remove recursively.\nUse -f to bypass recycle bin.\nUse -y to skip the prompt.\nUse -i [include] to include glob.\nUse -e [exclude] to exclude glob."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("nm"),
@@ -61,28 +63,28 @@ namespace FileUtilitiesCore
                 args => args.Length > 0 && args[0].ToLower().Equals("touch"),
                 Touch.Command,
                 "touch [file]",
-                "Update the file at [file] if it exists. Otherwise, it creates it."
+                "Update the file at [file] if it exists.\nOtherwise, it creates it."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("info"),
-                Helpers.Info,
-                "info [file]",
-                "Display the file information at [file]."
+                Other.Info,
+                "info [path]",
+                "Display the directory or file information at [path]."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("size"),
-                Helpers.Size,
-                "size [file]",
-                "Display the file size in bytes at [file]."
+                Other.Size,
+                "size [path]",
+                "Display the directory or file size in bytes at [path]."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("exec"),
                 Exec.Command,
-                "exec [name] [...args]",
+                "exec [name] [args...]",
                 "Executes a script item."
             );
             repl.AddCommand(
-                args => args.Length == 3 && args[0].ToLower().Equals("make") && args[1].ToLower().Equals("script"),
+                args => args.Length > 2 && args[0].ToLower().Equals("make") && args[1].ToLower().Equals("script"),
                 MakeScript.Command,
                 "make script [name]",
                 "Steps to make a new script item."
@@ -95,19 +97,19 @@ namespace FileUtilitiesCore
             );
             repl.AddCommand(
                 args => (args.Length == 2 || args.Length == 3) && args[0].ToLower().Equals("dir") && args[1].ToLower().Equals("scripts"),
-                Helpers.DirectoryScripts,
+                Other.DirectoryScripts,
                 "dir scripts -o",
-                "Prints the script items directory. Use -p to open the directory."
+                "Prints the script items directory.\nUse -p to open the directory."
             );
             repl.AddCommand(
                 args => args.Length == 2 && args[0].ToLower().Equals("list") && args[1].ToLower().Equals("scripts"),
-                Helpers.ListScripts,
+                Other.ListScripts,
                 "list scripts",
                 "Lists the available scripts."
             );
             repl.AddCommand(
                 args => args.Length == 1 && (args[0].ToLower().Equals("open") || args[0].ToLower().Equals("o")),
-                Helpers.OpenSettings,
+                Other.OpenSettings,
                 "open (o)",
                 "Open the settings JSON."
             );

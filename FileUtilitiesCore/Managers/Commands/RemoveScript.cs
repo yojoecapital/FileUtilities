@@ -6,31 +6,31 @@ namespace FileUtilitiesCore.Managers.Commands
     {
         public static void Command(string[] args)
         {
-            if (args.Length != 3)
-            {
-                PrettyConsole.PrintError($"Invalid arguments.");
-            }
-            else Run(args[2]);
-        }
-
-        private static void Run(string script)
-        {
             try
             {
-                var item = Helpers.fileManager.GetScriptItem(script);
-                if (item == null) 
+                if (Arg.Parse(args.Skip(2), 1, out var mandatoryResults))
                 {
-                    PrettyConsole.PrintError("Could not parse script item JSON file.");
-                    return;
+                    Run(args[0]);
                 }
-                Console.Write($"Are you sure you want to remove the script \"{script}\"? (y/n): ");
-                if (!Console.ReadLine().Trim().ToLower().Equals("y")) return;
-                Helpers.fileManager.DeleteScriptItem(script, item);
+                else PrettyConsole.PrintError("Invalid arguments.");
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-                PrettyConsole.PrintError($"Could not remove script.\n{ex.Message}");
+                PrettyConsole.PrintError(ex.Message);
             }
+        }
+
+        public static void Run(string script)
+        {
+            var item = Helpers.fileManager.GetScriptItem(script);
+            if (item == null) 
+            {
+                PrettyConsole.PrintError("Could not parse script item JSON file.");
+                return;
+            }
+            Console.Write($"Are you sure you want to remove the script '{script}'? (y/n): ");
+            if (!Console.ReadLine().Trim().ToLower().Equals("y")) return;
+            Helpers.fileManager.DeleteScriptItem(script, item);
         }
     }
 }

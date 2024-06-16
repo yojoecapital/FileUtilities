@@ -7,83 +7,84 @@ namespace FileUtilitiesCore.Managers.Commands
     {
         public static void Command(string[] args)
         {
-            if (Helpers.GetParameters(args, 1, new string[] { "-r", "-f", "-y" }, new string[] { "-i", "-e" }, out var flags, out var strs))
-            {
-                Run(args[1], strs["-i"], strs["-e"], flags["-r"], flags["-f"], flags["-y"]);
-            }
-            else PrettyConsole.PrintError($"Invalid arguments.");
-        }
-
-        public static void Run(string source, string include, string exclude, bool recurse, bool force, bool yes)
-        {
             try
             {
-                // When pattern is false, remove a specific file or directory
-                if (File.Exists(source))
+                if (Arg.Parse(args.Skip(1), 0, true, new [] { "-r", "-f", "-y" }, new [] { "-i", "-e" }, out var _, out var spreadResults, out var flagResults, out var stringResults))
                 {
-                    if (!yes)
-                    {
-                        // If it's a file, delete it directly
-                        Console.Write($"Are you sure you want to remove the file \"{source}\"? (y/n): ");
-                        if (!Console.ReadLine().Trim().ToLower().Equals("y")) return;
-                    }
-
-                    if (force) File.Delete(source);
-                    else FileSystem.DeleteFile(source, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
+                    fileOperations = new List<string>();
+                    dirOperations = new List<string>();
+                    Helpers.PerformOnItems(
+                        spreadResults, stringResults["-i"], stringResults["-e"], flagResults["-r"],
+                        OnFile,
+                        OnDir,
+                        OnPath
+                    );
+                    Run(flagResults["-f"], flagResults["-y"]);
                 }
-                else if (Directory.Exists(source))
-                {
-                    if (!string.IsNullOrEmpty(include) || !string.IsNullOrEmpty(exclude))
-                    {
-                        source = Path.GetFullPath(source);
-                        Directory.SetCurrentDirectory(source);
-
-                        // If using a pattern then we'll filter
-                        var option = recurse ? System.IO.SearchOption.AllDirectories : System.IO.SearchOption.TopDirectoryOnly;
-
-                        // Find files matching the pattern
-                        var files = Directory.GetFiles(source, "*", option);
-
-                        var matchingFiles = Helpers.Filter(files.Select(path => Path.GetRelativePath(source, path)), include, exclude);
-
-                        if (!matchingFiles.Any()) return;
-                        if (!yes)
-                        {
-                            PrettyConsole.PrintList(matchingFiles);
-                            Console.Write($"Are you sure you want to remove the above files? (y/n): ");
-                            if (!Console.ReadLine().Trim().ToLower().Equals("y")) return;
-                        }
-
-                        // Remove all matching files
-                        if (force) 
-                        {
-                            foreach (string file in matchingFiles)
-                                File.Delete(file);
-                        }
-                        else 
-                        {
-                            foreach (string file in matchingFiles)
-                                FileSystem.DeleteFile(file, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
-                        }
-                    }
-                    else
-                    {
-
-                        if (!yes)
-                        {
-                            // If it's a directory, remove it recursively
-                            Console.Write($"Are you sure you want to remove the {(Helpers.IsDirectoryEmpty(source) ? "" : "* ")}directory \"{source}\"? (y/n): ");
-                            if (!Console.ReadLine().Trim().ToLower().Equals("y")) return;
-                        }
-
-                        if (force) Directory.Delete(source, true);
-                        else FileSystem.DeleteDirectory(source, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
-                    }
-                }
+                else PrettyConsole.PrintError("Invalid arguments.");
             }
             catch (Exception ex)
             {
-                PrettyConsole.PrintError($"Could not remove.\n{ex.Message}");
+                PrettyConsole.PrintError(ex.Message);
+            }
+        }
+
+        private static List<string> fileOperations;
+        private static List<string> dirOperations;
+
+        private static void OnFile(string source) => fileOperations.Add(source);
+        private static void OnDir(string source) => dirOperations.Add(source);
+        private static void OnPath(string _, string source) => fileOperations.Add(source);
+
+        public static void Run(bool force, bool yes)
+        {
+            if (!yes && (fileOperations.Count > 0 || dirOperations.Count > 0))
+            {
+                if (force)
+                {
+                    foreach (var op in fileOperations) Console.WriteLine($"{op}");
+                    foreach (var op in dirOperations) 
+                    {
+                        if (Helpers.IsDirectoryEmpty(op)) Console.WriteLine($"{op}\\");
+                        else Console.WriteLine($"{op}\\*");
+                    }
+                }
+                else 
+                {
+                    foreach (var op in fileOperations) Console.WriteLine($"{op} → Recycle Bin");
+                    foreach (var op in dirOperations) 
+                    {
+                        if (Helpers.IsDirectoryEmpty(op)) Console.WriteLine($"{op}\\ → Recycle Bin");
+                        else Console.WriteLine($"{op}\\* → Recycle Bin");
+                    }
+                }
+                Console.Write("Are you sure you want to remove the above items? (y/n): ");
+                if (!Console.ReadLine().Trim().ToLower().Equals("y")) return;
+            }
+            foreach (var op in fileOperations) FileOperation(op, force);
+            foreach (var op in dirOperations) DirectoryOperation(op, force);
+        }
+
+        private static void DirectoryOperation(string sourceDir, bool force)
+        {
+            if (force) Directory.Delete(sourceDir, true);
+            else
+            {
+                var size = Helpers.GetDirectorySize(sourceDir);
+                var option = size >= Helpers.fileManager.Settings.dialogueSize * 1024 * 1024 ? UIOption.AllDialogs : UIOption.OnlyErrorDialogs;
+                FileSystem.DeleteDirectory(sourceDir, option, RecycleOption.SendToRecycleBin);
+            }
+        }
+
+        private static void FileOperation(string sourceFile, bool force)
+        {
+            if (force) File.Delete(sourceFile);
+            else 
+            {
+                var info = new FileInfo(sourceFile);
+                var size = info.Length;
+                var option = size >= Helpers.fileManager.Settings.dialogueSize * 1024 * 1024 ? UIOption.AllDialogs : UIOption.OnlyErrorDialogs;
+                FileSystem.DeleteFile(sourceFile, option, RecycleOption.SendToRecycleBin);
             }
         }
     }

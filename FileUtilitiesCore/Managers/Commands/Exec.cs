@@ -15,7 +15,7 @@ namespace FileUtilitiesCore.Managers.Commands
             else Run(args[1], args.Skip(2).ToArray());
         }
 
-        private static void Run(string name, string[] args)
+        public static void Run(string name, string[] args)
         {
             try
             {
