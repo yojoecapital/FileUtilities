@@ -8,6 +8,7 @@
 
 - `fs info` and `fs size` now gives information and size for directories as well.
 - `fs rm` will now show a dialogue box if the file or directory size is greater than the MB specified in `"dialogueSize"` of the settings JSON.
+- `fs help [filter]` can now filter commands with `[filter]`.
 - `fs` no longer uses pagination. I prefer to pipe to PowerShell's `more` command.
   - `"resultsPerPage"` was removed and will be ignored from the settings JSON.
 
@@ -18,7 +19,7 @@
 
 - `fs quit (q) (exit)`: Exit the program.
 - `fs clear (cls)`: Clear the console screen.
-- `fs help (h)`: Display the help message.
+- `fs help (h) [filter]`: Display the help message. Use an optional `[filter]` on commands. ✨
 - `fs cd`: Prints the current directory. This *does not* set the current directory.
 
 ### List and Filter Segments
@@ -27,13 +28,13 @@
   - `-r`: Display recursively.
   - `-i [include]`: Include glob patterns.
   - `-e [exclude]`: Exclude glob patterns.
-- `fs find [dir] -r -cd -i [include] -e [exclude]`: List segments of `[dir]`.
+- `fs find [dir] -r -cd -i [include] -e [exclude]`: List segments of `[dir]`. 
   - `-r`: Display recursively.
-  - `-cd`:  Display relative to the current directory.
+  - `-cd`:  Display relative to the current directory. ✨
   - `-i [include]`: Include glob patterns.
   - `-e [exclude]`: Exclude glob patterns.
 
-### Copy, Move, and Remove
+### Copy, Move, and Remove ✨
 
 - Note that you can include multiple sources in `[src...]`.
 - Note that when globs or the recursive flag are included, they will be considered if a source is a directory. Moreover, they will only affect *files* (i.e., directories will not be removed).
@@ -67,10 +68,10 @@
 - `fs mkdir [dir]`: Make a new directory at `[dir]`.
 - `fs touch [file]`: Update the file at `[file]` if it exists. Otherwise, create it.
 
-### Metadata
+### Metadata ✨
 
-- `fs info [file]`: Display the file information at `[file]`.
-- `fs size [file]`: Display the file size in bytes at `[file]`.
+- `fs info [path]`: Display the directory or file information at `[path]`.
+- `fs size [path]`: Display the directory or file size in bytes at `[path]`.
 
 ### Scripting
 
