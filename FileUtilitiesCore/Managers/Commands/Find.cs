@@ -8,9 +8,9 @@ namespace FileUtilitiesCore.Managers.Commands
         {
             try
             {
-                if (Arg.Parse(args.Skip(1), 1, new [] { "-r", "-cd" }, new [] { "-i", "-e" }, out var mandatoryResults, out var flagResults, out var stringResults))
+                if (Arg.Parse(args.Skip(1), 0, true, new [] { "-r", "-cd" }, new [] { "-i", "-e" }, out var _, out var spreadResults, out var flagResults, out var stringResults))
                 {
-                    Run(mandatoryResults[0], stringResults["-i"], stringResults["-e"], flagResults["-r"], flagResults["-cd"]);
+                    foreach (var path in spreadResults) Run(path, stringResults["-i"], stringResults["-e"], flagResults["-r"], flagResults["-cd"]);
                 }
                 else PrettyConsole.PrintError("Invalid arguments.");
             }

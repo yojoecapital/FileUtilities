@@ -1,91 +1,75 @@
-# Release Notes - Version [3.0.0]
+# Release Notes - Version [3.1.0]
 
-- `fs cp`, `fs mv`, `fs rm`, `fs touch`, `fs mkdir` allow you use multiple sources.
-  - For example, using `fs mv a b c d` on directories `a`, `b`, `c`, and `d` will move (by merging) `a`, `b`, and `c` to`d`.
-
-- You can use `*` in the `[dest]` argument of `fs cp` and `fs mv` to use the same file name of the corresponding source.
-  - For example, using `fs cp a.txt b\*` will copy `a.txt` to `b\a.txt`.
-
-- `fs info` and `fs size` now gives information and size for directories as well.
-- `fs rm` will now show a dialogue box if the file or directory size is greater than the MB specified in `"dialogueSize"` of the settings JSON.
-- `fs help [filter]` can now filter commands with `[filter]`.
-- `fs` no longer uses pagination. I prefer to pipe to PowerShell's `more` command.
-  - `"resultsPerPage"` was removed and will be ignored from the settings JSON.
-
+- `fs size` was removed. Just use `fs info` to get size information which is labeled as `bytes` in the output.
+  
+- `fs info` can now take multiple paths.
+  
+- `fs find` can now take multiple directories.
+  
 
 ## Commands
 
 ### Default
 
-- `fs quit (q) (exit)`: Exit the program.
-- `fs clear (cls)`: Clear the console screen.
-- `fs help (h) [filter]`: Display the help message. Use an optional `[filter]` on commands. ✨
-- `fs cd`: Prints the current directory. This *does not* set the current directory.
+- `quit (q) (exit)`: Exit the program.
+- `clear (cls)`: Clear the console screen.
+- `help (h)`: Display this message.
+- `cd`: Print the current directory.
+- `open (o)`: Open the settings JSON.
 
 ### List and Filter Segments
 
-- `fs ls -r -i [include] -e [exclude]`: List segments of the current directory.
+- `ls -r -i [include] -e [exclude]`: List segments in the current directory.
   - `-r`: Display recursively.
   - `-i [include]`: Include glob patterns.
   - `-e [exclude]`: Exclude glob patterns.
-- `fs find [dir] -r -cd -i [include] -e [exclude]`: List segments of `[dir]`. 
+- `find [dirs...] -r -cd -i [include] -e [exclude]`: List segments in `[dirs...]`. ✨
   - `-r`: Display recursively.
-  - `-cd`:  Display relative to the current directory. ✨
+  - `-cd`: Display relative to the current directory.
   - `-i [include]`: Include glob patterns.
   - `-e [exclude]`: Exclude glob patterns.
 
-### Copy, Move, and Remove ✨
+### Copy, Move, and Remove 
 
-- Note that you can include multiple sources in `[src...]`.
-- Note that when globs or the recursive flag are included, they will be considered if a source is a directory. Moreover, they will only affect *files* (i.e., directories will not be removed).
-- `fs cp [src...] [dest] -r -o -y -i [include] -e [exclude]`: Copy from `[src...]` to `[dest]`.
-  - Use `*` in `[dest]` as a macro for the file name of a source.
+- `cp [src...] [dest] -r -o -y -i [include] -e [exclude]`: Copy from `[src...]` to `[dest]`.
+  - Use `*` in `[dest]` as a macro for the file name of `[src]`.
   - `-r`: Copy recursively.
   - `-o`: Overwrite existing items.
-  - `-y`: Answer yes to prompt.
+  - `-y`: Skip the prompt.
   - `-i [include]`: Include glob patterns.
   - `-e [exclude]`: Exclude glob patterns.
-- `fs mv [src...] [dest] -r -o -y -i [include] -e [exclude]`: Move from `[src...]` to `[dest]`.
-  - Use `*` in `[dest]` as a macro for the file name of a source.
+- `mv [src...] [dest] -r -o -y -i [include] -e [exclude]`: Move from `[src...]` to `[dest]`.
+  - Use `*` in `[dest]` as a macro for the file name of `[src]`.
   - `-r`: Move recursively.
   - `-o`: Overwrite existing items.
-  - `-y`: Answer yes to prompt.
+  - `-y`: Skip the prompt.
   - `-i [include]`: Include glob patterns.
   - `-e [exclude]`: Exclude glob patterns.
-- `fs rm [path...] -r -f -y -i [include] -e [exclude]`: Remove from `[src...]`.
+- `rm [paths...] -r -f -y -i [include] -e [exclude]`: Remove from `[paths...]`.
   - `-r`: Remove recursively.
-  - `-f`: Bypass the default behavior of putting the file in the recycle bin.
-  - `-y`: Answer yes to prompt.
+  - `-f`: Bypass recycle bin.
+  - `-y`: Skip the prompt.
   - `-i [include]`: Include glob patterns.
   - `-e [exclude]`: Exclude glob patterns.
 
-### Rename
+### Make Files and Directories
 
-- `fs nm [path] [name]`: Rename the item at `[path]` to `[name]`.
-
-### Make Files and Directories ✨
-
-- `fs mkdir [dirs...]`: Make new directories at `[dir...]`. 
-- `fs touch [files...]`: Update the files at `[files...]` if it exists. Otherwise, create it.
+- `mkdir [dirs...]`: Make new directories at `[dirs...]`.
+- `touch [files...]`: Update the files at `[files...]` if they exist. Otherwise, create them.
 
 ### Metadata ✨
 
-- `fs info [path]`: Display the directory or file information at `[path]`.
-- `fs size [path]`: Display the directory or file size in bytes at `[path]`.
+- `info [paths...]`: Display the directory or file information at `[paths...]`.
 
 ### Scripting
 
-- `fs exec [name] [args...]`: Execute a script item.
-- `fs make script [name]`: Steps to make a new script item.
-- `fs remove script [name]`: Remove a script item.
-- `fs open script [name]`: Opens the file for a script item.
-- `fs dir scripts -o`: Prints the script items directory.
+- `exec [name] [args...]`: Execute a script item.
+- `make script [name]`: Steps to make a new script item.
+- `remove script [name]`: Remove a script item.
+- `dir scripts -o`: Print the script items directory.
   - `-o`: Open the directory.
-- `fs list scripts`: Lists the available scripts.
-
-### Other
-
-- `fs open (o)`: Open the settings JSON.
+- `list scripts`: List the available scripts.
+- `open script [name]`: Open the file for a script item.
 
 ## Settings JSON
 

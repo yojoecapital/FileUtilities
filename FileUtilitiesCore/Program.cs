@@ -21,13 +21,13 @@ namespace FileUtilitiesCore
                 args => args.Length > 0 && args[0].ToLower().Equals("ls"),
                 List.Command,
                 "ls -r -i [include] -e [exclude]",
-                "List segements of current directory.\nUse -r to display recursively.\nUse -i [include] to include glob.\nUse -e [exclude] to exclude glob."
+                "List segements in current directory.\nUse -r to display recursively.\nUse -i [include] to include glob.\nUse -e [exclude] to exclude glob."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("find"),
                 Find.Command,
-                "find [dir] -r -d -i [include] -e [exclude]",
-                "List segements of [dir].\nUse -r to display recursively.\nUse -cd to display relative to the current directory.\nUse -i [include] to include glob.\nUse -e [exclude] to exclude glob."
+                "find [dirs...] -r -cd -i [include] -e [exclude]",
+                "List segements in [dirs...].\nUse -r to display recursively.\nUse -cd to display relative to the current directory.\nUse -i [include] to include glob.\nUse -e [exclude] to exclude glob."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("cp"),
@@ -44,14 +44,8 @@ namespace FileUtilitiesCore
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("rm"),
                 Remove.Command,
-                "rm [path...] -r -f -y -i [include] -e [exclude]",
-                "Remove from [path...].\nUse -r to remove recursively.\nUse -f to bypass recycle bin.\nUse -y to skip the prompt.\nUse -i [include] to include glob.\nUse -e [exclude] to exclude glob."
-            );
-            repl.AddCommand(
-                args => args.Length > 0 && args[0].ToLower().Equals("nm"),
-                Rename.Command,
-                "nm [path] [name]",
-                "Rename item at [path] to [name]."
+                "rm [paths...] -r -f -y -i [include] -e [exclude]",
+                "Remove from [paths...].\nUse -r to remove recursively.\nUse -f to bypass recycle bin.\nUse -y to skip the prompt.\nUse -i [include] to include glob.\nUse -e [exclude] to exclude glob."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("mkdir"),
@@ -67,15 +61,9 @@ namespace FileUtilitiesCore
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("info"),
-                Other.Info,
-                "info [path]",
-                "Display the directory or file information at [path]."
-            );
-            repl.AddCommand(
-                args => args.Length > 0 && args[0].ToLower().Equals("size"),
-                Other.Size,
-                "size [path]",
-                "Display the directory or file size in bytes at [path]."
+                Info.Command,
+                "info [paths...]",
+                "Display the directory or file information at [paths...]."
             );
             repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("exec"),
@@ -99,7 +87,7 @@ namespace FileUtilitiesCore
                 args => (args.Length == 2 || args.Length == 3) && args[0].ToLower().Equals("dir") && args[1].ToLower().Equals("scripts"),
                 Other.DirectoryScripts,
                 "dir scripts -o",
-                "Prints the script items directory.\nUse -p to open the directory."
+                "Prints the script items directory.\nUse -o to open the directory."
             );
             repl.AddCommand(
                 args => args.Length == 2 && args[0].ToLower().Equals("list") && args[1].ToLower().Equals("scripts"),
