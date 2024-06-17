@@ -29,8 +29,7 @@ namespace FileUtilitiesCore.Managers.Commands
             {
                 if (!File.Exists(path) && !Directory.Exists(path))
                 {
-                    PrettyConsole.PrintError($"'{path}' does not exist.");
-                    return;
+                    throw new Exception($"'{path}' does not exist.");
                 }
                 var attributes = File.GetAttributes(path);
                 var isDirectory = (attributes & FileAttributes.Directory) == FileAttributes.Directory;

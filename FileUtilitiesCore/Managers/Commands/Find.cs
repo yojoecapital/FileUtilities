@@ -24,8 +24,7 @@ namespace FileUtilitiesCore.Managers.Commands
         {
             if (!Directory.Exists(dir))
             {
-                PrettyConsole.PrintError($"Directory '{dir}' does not exist.");
-                return;
+                throw new Exception($"Directory '{dir}' does not exist.");
             }
             var option = recurse ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
             var items = Directory.GetFiles(dir, "*", option).Select(path => Path.GetRelativePath(dir, path)).Union(Directory.GetDirectories(dir, "*", option).Select(path => Helpers.EnsureBackslash(Path.GetRelativePath(dir, path))));

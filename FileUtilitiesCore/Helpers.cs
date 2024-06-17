@@ -95,8 +95,7 @@ namespace FileUtilitiesCore.Managers.Commands
                     }
                     else
                     {
-                        PrettyConsole.PrintError($"'{source}' does not exist.");
-                        return;
+                        throw new Exception($"'{source}' does not exist.");
                     }
                 }
             }
@@ -108,8 +107,7 @@ namespace FileUtilitiesCore.Managers.Commands
                     else if (Directory.Exists(source)) onDir(GetNormalizedPath(source));
                     else
                     {
-                        PrettyConsole.PrintError($"'{source}' does not exist.");
-                        return;
+                        throw new Exception($"'{source}' does not exist.");
                     }
                 }
             }
