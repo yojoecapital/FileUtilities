@@ -71,7 +71,7 @@ namespace FileUtilitiesCore.Managers.Commands
             }
             if (items.Count > 0)
             {
-                var json = items.Count == 1 ? JsonConvert.SerializeObject(items[0]) : JsonConvert.SerializeObject(items);
+                var json = items.Count == 1 ? JsonConvert.SerializeObject(items[0], Formatting.Indented) : JsonConvert.SerializeObject(items, Formatting.Indented);
                 PrettyConsole.PrintColor(json, ConsoleColor.Yellow);
             }
         }
