@@ -50,7 +50,7 @@ namespace FileUtilitiesCore.Managers
             Directory.CreateDirectory(ScriptsFilePath);
             var itemPath = Path.Combine(ScriptsFilePath, name + ".json");
             var scriptPath = Path.Combine(ScriptsFilePath, name + "." + Settings.methods[item.exe].extension);
-            SetObject(itemPath, item);
+            SetObject(itemPath, item, Formatting.Indented);
             File.WriteAllText(scriptPath, script);
         }
         
