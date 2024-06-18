@@ -1,10 +1,5 @@
 using CliFramework;
-using Newtonsoft.Json;
 using System.Diagnostics;
-using Microsoft.Extensions.FileSystemGlobbing;
-using Microsoft.VisualBasic.FileIO;
-using System.Runtime.InteropServices;
-using Microsoft.VisualBasic;
 
 namespace FileUtilitiesCore.Managers.Commands
 {

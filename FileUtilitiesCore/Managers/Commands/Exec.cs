@@ -1,9 +1,5 @@
 ﻿using CliFramework;
-using FileUtilitiesCore.Utilities;
-using System;
 using System.Diagnostics;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace FileUtilitiesCore.Managers.Commands
 {

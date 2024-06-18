@@ -12,7 +12,7 @@ namespace FileUtilitiesCore
                 pagifyHelp = int.MaxValue
             };
             repl.AddCommand(
-                args => args.Length == 2 && args[0].Equals("cd"),
+                args => args.Length == 1 && args[0].ToLower().Equals("cd"),
                 Other.Cd,
                 "cd",
                 "Prints the current directory."
@@ -72,19 +72,19 @@ namespace FileUtilitiesCore
                 "Executes a script item."
             );
             repl.AddCommand(
-                args => args.Length > 2 && args[0].ToLower().Equals("make") && args[1].ToLower().Equals("script"),
+                args => args.Length == 3 && args[0].ToLower().Equals("make") && args[1].ToLower().Equals("script"),
                 MakeScript.Command,
                 "make script [name]",
                 "Steps to make a new script item."
             );
             repl.AddCommand(
-                args => args.Length > 2 && args[0].ToLower().Equals("remove") && args[1].ToLower().Equals("script"),
+                args => args.Length == 3 && args[0].ToLower().Equals("remove") && args[1].ToLower().Equals("script"),
                 RemoveScript.Command,
                 "remove script [name]",
                 "Removes a script item."
             );
             repl.AddCommand(
-                args => (args.Length == 2 || args.Length == 3) && args[0].ToLower().Equals("dir") && args[1].ToLower().Equals("scripts"),
+                args => args.Length >= 2 && args[0].ToLower().Equals("dir") && args[1].ToLower().Equals("scripts"),
                 Other.DirectoryScripts,
                 "dir scripts -o",
                 "Prints the script items directory.\nUse -o to open the directory."

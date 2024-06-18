@@ -1,6 +1,5 @@
 ﻿using CliFramework;
 using FileUtilitiesCore.Utilities;
-using System.Text.RegularExpressions;
 
 namespace FileUtilitiesCore.Managers.Commands
 {
