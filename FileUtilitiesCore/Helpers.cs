@@ -65,6 +65,12 @@ namespace FileUtilitiesCore.Managers.Commands
             return path;
         }
 
+        public static string ProcessDestination(bool wildFlag, string source, string dest) 
+        {
+            if (wildFlag) return dest.Replace("*", Path.GetFileName(Path.GetFullPath(source)));
+            return dest;
+        }
+
         public static IEnumerable<string> Filter(IEnumerable<string> paths,  string include, string exclude)
         {
             var matcher = new Matcher();

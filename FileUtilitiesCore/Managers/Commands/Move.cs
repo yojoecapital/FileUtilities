@@ -35,17 +35,11 @@ namespace FileUtilitiesCore.Managers.Commands
         private static List<(string, string)> fileOperations;
         private static List<(string, string)> dirOperations;
 
-        private static string ProcessDest(string source, string dest) 
-        {
-            if (wildFlag) return dest.Replace("*", Path.GetFileName(source));
-            return dest;
-        }
-
-        private static void OnFile(string source, string dest) => fileOperations.Add((source, ProcessDest(source, dest)));
-        private static void OnDir(string source, string dest) => dirOperations.Add((source, ProcessDest(source, dest)));
+        private static void OnFile(string source, string dest) => fileOperations.Add((source, Helpers.ProcessDestination(wildFlag, source, dest)));
+        private static void OnDir(string source, string dest) => dirOperations.Add((source, Helpers.ProcessDestination(wildFlag, source, dest)));
         private static void OnPath(string relativeTo, string source, string dest) 
         {
-            dest = ProcessDest(relativeTo, dest);
+            dest = Helpers.ProcessDestination(wildFlag, relativeTo, dest);
             dest = Path.Join(dest, Path.GetRelativePath(relativeTo, source));
             fileOperations.Add((source, dest));
         }
@@ -96,7 +90,7 @@ namespace FileUtilitiesCore.Managers.Commands
         private static void FileOperation(string sourceFile, string destFile, bool overwrite)
         {
             var dir = Path.GetDirectoryName(destFile);
-            Directory.CreateDirectory(dir);
+            if (!string.IsNullOrWhiteSpace(dir)) Directory.CreateDirectory(dir);
             File.Move(sourceFile, destFile, overwrite);
         }
     }

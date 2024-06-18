@@ -12,7 +12,7 @@ namespace FileUtilitiesCore
                 pagifyHelp = int.MaxValue
             };
             repl.AddCommand(
-                args => args.Length == 2 && (args[0].Equals("help") || args[0].Equals("h")) && args[1].Equals("-j"),
+                args => args.Length == 2 && args[0].Equals("cd"),
                 Other.Cd,
                 "cd",
                 "Prints the current directory."

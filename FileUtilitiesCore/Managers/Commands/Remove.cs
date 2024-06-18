@@ -1,5 +1,6 @@
-﻿using CliFramework;
-using Microsoft.VisualBasic.FileIO;
+﻿using System.Runtime.InteropServices;
+using System.Text;
+using CliFramework;
 
 namespace FileUtilitiesCore.Managers.Commands
 {
@@ -61,31 +62,100 @@ namespace FileUtilitiesCore.Managers.Commands
                 Console.Write("Are you sure you want to remove the above items? (y/n): ");
                 if (!Console.ReadLine().Trim().ToLower().Equals("y")) return;
             }
-            foreach (var op in fileOperations) FileOperation(op, force);
-            foreach (var op in dirOperations) DirectoryOperation(op, force);
+            DirectoryOperation(dirOperations, force);
+            FileOperation(fileOperations, force);   
         }
 
-        private static void DirectoryOperation(string sourceDir, bool force)
+        private static void DirectoryOperation(IEnumerable<string> dirs, bool force)
         {
-            if (force) Directory.Delete(sourceDir, true);
-            else
+            
+            if (force) 
             {
-                var size = Helpers.GetDirectorySize(sourceDir);
-                var option = size >= Helpers.fileManager.Settings.dialogueSize * 1024 * 1024 ? UIOption.AllDialogs : UIOption.OnlyErrorDialogs;
-                FileSystem.DeleteDirectory(sourceDir, option, RecycleOption.SendToRecycleBin);
+                foreach (var dir in dirs) Directory.Delete(dir);
+            }
+            else Delete(dirs);
+        }
+
+        private static void FileOperation(IEnumerable<string> files, bool force)
+        {
+            if (force) 
+            {
+                foreach (var file in files) File.Delete(file);
+            }
+            else Delete(files);
+        }
+
+        public static void Delete(IEnumerable<string> paths)
+        {
+            // Convert the list of paths into a null-terminated string
+            StringBuilder pathsBuilder = new StringBuilder();
+            foreach (string path in paths)
+            {
+                pathsBuilder.Append(path).Append('\0');
+            }
+            pathsBuilder.Append('\0'); // Double null-terminate the string
+
+            // Set up the SHFILEOPSTRUCT structure
+            SHFILEOPSTRUCT fileOp = new SHFILEOPSTRUCT
+            {
+                wFunc = FO_Func.FO_DELETE,
+                pFrom = pathsBuilder.ToString(),
+                fFlags = FILEOP_FLAGS.FOF_ALLOWUNDO // | FILEOP_FLAGS.FOF_NOCONFIRMATION
+            };
+
+            // Perform the file operation
+            int result = SHFileOperation(ref fileOp);
+
+            // Check the result
+            if (result != 0)
+            {
+                throw new Exception("Error in deletion.");
             }
         }
 
-        private static void FileOperation(string sourceFile, bool force)
+        [DllImport("shell32.dll", CharSet = CharSet.Auto)]
+        private static extern int SHFileOperation(ref SHFILEOPSTRUCT lpFileOp);
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+        private struct SHFILEOPSTRUCT
         {
-            if (force) File.Delete(sourceFile);
-            else 
-            {
-                var info = new FileInfo(sourceFile);
-                var size = info.Length;
-                var option = size >= Helpers.fileManager.Settings.dialogueSize * 1024 * 1024 ? UIOption.AllDialogs : UIOption.OnlyErrorDialogs;
-                FileSystem.DeleteFile(sourceFile, option, RecycleOption.SendToRecycleBin);
-            }
+            public IntPtr hwnd;
+            public FO_Func wFunc;
+            public string pFrom;
+            public string pTo;
+            public FILEOP_FLAGS fFlags;
+            public bool fAnyOperationsAborted;
+            public IntPtr hNameMappings;
+            public string lpszProgressTitle;
+        }
+
+        private enum FO_Func : uint
+        {
+            FO_MOVE = 0x0001,
+            FO_COPY = 0x0002,
+            FO_DELETE = 0x0003,
+            FO_RENAME = 0x0004
+        }
+
+        [Flags]
+        private enum FILEOP_FLAGS : ushort
+        {
+            FOF_MULTIDESTFILES = 0x0001,
+            FOF_CONFIRMMOUSE = 0x0002,
+            FOF_SILENT = 0x0004,
+            FOF_RENAMEONCOLLISION = 0x0008,
+            FOF_NOCONFIRMATION = 0x0010, // Don't prompt the user.
+            FOF_WANTMAPPINGHANDLE = 0x0020,
+            FOF_ALLOWUNDO = 0x0040, // Allow undo
+            FOF_FILESONLY = 0x0080,
+            FOF_SIMPLEPROGRESS = 0x0100,
+            FOF_NOCONFIRMMKDIR = 0x0200,
+            FOF_NOERRORUI = 0x0400,
+            FOF_NOCOPYSECURITYATTRIBS = 0x0800,
+            FOF_NORECURSION = 0x1000,
+            FOF_NO_CONNECTED_ELEMENTS = 0x2000,
+            FOF_WANTNUKEWARNING = 0x4000,
+            FOF_NORECURSEREPARSE = 0x8000
         }
     }
 }
