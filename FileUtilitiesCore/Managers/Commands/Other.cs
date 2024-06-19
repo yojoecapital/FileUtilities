@@ -21,7 +21,7 @@ namespace FileUtilitiesCore.Managers.Commands
         
         public static void DirectoryScripts(string[] args)
         {
-            if (Arg.Parse(args.Skip(1), 0, new [] { "-o" }, Array.Empty<string>(), out var _, out var flagResults, out var _))
+            if (Arg.Parse(args.Skip(2), 0, new [] { "-o" }, Array.Empty<string>(), out var _, out var flagResults, out var _))
             {
                 var path = Helpers.fileManager.ScriptsFilePath;
                 if (flagResults["-o"] && Directory.Exists(path))
