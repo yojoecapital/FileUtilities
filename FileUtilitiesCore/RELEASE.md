@@ -63,7 +63,7 @@
 
 ### Scripting
 
-- `exec [name] [args...]`: Execute a script item.
+- `exec (e) [name] [args...]`: Execute a script item.
 - `make script [name]`: Steps to make a new script item.
 - `remove script [name]`: Remove a script item.
 - `dir scripts -o`: Print the script items directory.

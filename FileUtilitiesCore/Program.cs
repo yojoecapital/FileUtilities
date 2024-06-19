@@ -66,9 +66,9 @@ namespace FileUtilitiesCore
                 "Display the directory or file information at [paths...]."
             );
             repl.AddCommand(
-                args => args.Length > 0 && args[0].ToLower().Equals("exec"),
+                args => args.Length > 0 && (args[0].ToLower().Equals("exec") || args[0].ToLower().Equals("e")),
                 Exec.Command,
-                "exec [name] [args...]",
+                "exec (e) [name] [args...]",
                 "Executes a script item."
             );
             repl.AddCommand(
