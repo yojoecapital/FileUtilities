@@ -77,7 +77,6 @@ This is an example of how the settings JSON may look like. You can use `fs open`
 
 ```json
 {
-  "dialogueSize": 100,
   "scriptsPath": "scripts",
   "endBlock":  "</script>",
   "methods": {
@@ -100,7 +99,6 @@ This is an example of how the settings JSON may look like. You can use `fs open`
 
 ### JSON Fields
 
-- `"dialogueSize"`: Specifies the minimum size in MB for when `fs rm` should use the dialogue box. This will not be done if `-f` is passed.
 - `"scriptsPath"`: The path to the script items. You can use this to save the scripts to a different directory, such as a shared directory. Make sure the directory is used exclusively for script items.
 - `"endBlock"`: This is the token to end a script when running `make script [name]`.
 - `"methods"`: These are methods used to execute a script item.
