@@ -9,9 +9,9 @@ namespace FileUtilitiesCore.Managers.Commands
         {
             try
             {
-                if (Arg.Parse(args.Skip(1), 1, false, out var mandatoryResults, out var spreadResults))
+                if (Arg.Parse(args.Skip(1), 1, false,  new [] { "-nw" }, Array.Empty<string>(), out var mandatoryResults, out var spreadResults, out var flagResults, out var _))
                 {
-                    Run(mandatoryResults[0], spreadResults);
+                    Run(mandatoryResults[0], spreadResults, flagResults["-nw"]);
                 }
                 else PrettyConsole.PrintError("Invalid arguments.");
             }
@@ -21,7 +21,7 @@ namespace FileUtilitiesCore.Managers.Commands
             }
         }
 
-        public static void Run(string name, string[] args)
+        public static void Run(string name, string[] args, bool newWindow)
         {
             var item = Helpers.fileManager.GetScriptItem(name);
             if (item == null)
@@ -61,10 +61,8 @@ namespace FileUtilitiesCore.Managers.Commands
             var processStartInfo = new ProcessStartInfo()
             {
                 FileName = method.path,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
                 UseShellExecute = false,
-                CreateNoWindow = true
+                CreateNoWindow = newWindow
             };
             foreach(var arg in method.setup) processStartInfo.ArgumentList.Add(arg);
             processStartInfo.ArgumentList.Add(path);
@@ -73,20 +71,8 @@ namespace FileUtilitiesCore.Managers.Commands
             // Start the process
             using Process process = Process.Start(processStartInfo);
 
-            // Read the output from the process
-            string output = process.StandardOutput.ReadToEnd();
-            string errors = process.StandardError.ReadToEnd();
-            
             // Wait for the process to complete
             process.WaitForExit();
-
-            // Output the results to the console
-            Console.Write(output);
-
-            if (!string.IsNullOrEmpty(errors))
-            {
-                Console.Write(errors);
-            }
         }
 
         private static char[] specialChars = { '&', '<', '>', '|', '(', ')', '^', '"' };

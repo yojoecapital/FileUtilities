@@ -1,10 +1,6 @@
-# Release Notes - Version [3.1.0]
+# Release Notes - Version [3.1.1]
 
-- `fs size` was removed. Just use `fs info` to get size information which is labeled as `bytes` in the output.
-  
-- `fs info` can now take multiple paths.
-  
-- `fs find` can now take multiple directories.
+- `fs exec` now executes in the same shell. It can take the flag `-nw` to specify to execute in a new window.
   
 
 ## Commands
@@ -23,7 +19,7 @@
   - `-r`: Display recursively.
   - `-i [include]`: Include glob patterns.
   - `-e [exclude]`: Exclude glob patterns.
-- `find [dirs...] -r -cd -i [include] -e [exclude]`: List segments in `[dirs...]`. ✨
+- `find [dirs...] -r -cd -i [include] -e [exclude]`: List segments in `[dirs...]`.
   - `-r`: Display recursively.
   - `-cd`: Display relative to the current directory.
   - `-i [include]`: Include glob patterns.
@@ -57,13 +53,15 @@
 - `mkdir [dirs...]`: Make new directories at `[dirs...]`.
 - `touch [files...]`: Update the files at `[files...]` if they exist. Otherwise, create them.
 
-### Metadata ✨
+### Metadata
 
 - `info [paths...]`: Display the directory or file information at `[paths...]`.
 
 ### Scripting
 
-- `exec (e) [name] [args...]`: Execute a script item.
+- `exec (e) [name] [args...] -nw`: Execute a script item.
+  - `-nw`:  Create a new window for the process.
+
 - `make script [name]`: Steps to make a new script item.
 - `remove script [name]`: Remove a script item.
 - `dir scripts -o`: Print the script items directory.

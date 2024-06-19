@@ -68,8 +68,8 @@ namespace FileUtilitiesCore
             repl.AddCommand(
                 args => args.Length > 0 && (args[0].ToLower().Equals("exec") || args[0].ToLower().Equals("e")),
                 Exec.Command,
-                "exec (e) [name] [args...]",
-                "Executes a script item."
+                "exec (e) [name] [args...] -nw",
+                "Executes a script item.\nUse -nw to create a new window for the process."
             );
             repl.AddCommand(
                 args => args.Length == 3 && args[0].ToLower().Equals("make") && args[1].ToLower().Equals("script"),

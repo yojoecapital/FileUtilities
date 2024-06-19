@@ -59,7 +59,8 @@
 
 ### Scripting
 
-- `exec (e) [name] [args...]`: Execute a script item.
+- `exec (e) [name] [args...] -nw`: Execute a script item.
+  - `-nw`:  Create a new window for the process.
 - `make script [name]`: Steps to make a new script item.
 - `remove script [name]`: Remove a script item.
 - `dir scripts -o`: Print the script items directory.
