@@ -66,9 +66,9 @@ namespace FileUtilitiesCore
                 "Display the directory or file information at [paths...]."
             );
             repl.AddCommand(
-                args => args.Length > 0 && (args[0].ToLower().Equals("exec") || args[0].ToLower().Equals("e")),
+                args => args.Length > 0 && (args[0].ToLower().Equals("exec") || args[0].ToLower().Equals("!")),
                 Exec.Command,
-                "exec (e) [name] [args...] -nw",
+                "exec (!) [name] [args...] -nw",
                 "Executes a script item.\nUse -nw to create a new window for the process."
             );
             repl.AddCommand(
