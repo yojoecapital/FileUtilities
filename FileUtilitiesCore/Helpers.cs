@@ -30,7 +30,7 @@ namespace FileUtilitiesCore.Managers.Commands
             string userprofile = Environment.GetEnvironmentVariable("USERPROFILE");
             if (!string.IsNullOrEmpty(userprofile))
             {
-                input = input.Replace("~", userprofile);
+                input = ReplaceInPath(input, "~", userprofile);
             }
 
             // find and replace all %<var>% patterns with their environment variable values
@@ -67,7 +67,12 @@ namespace FileUtilitiesCore.Managers.Commands
 
         public static string ProcessDestination(bool wildFlag, string source, string dest) 
         {
-            if (wildFlag) return dest.Replace("*", Path.GetFileName(Path.GetFullPath(source)));
+            if (wildFlag) 
+            {
+
+                var replacement = Path.GetFileName(Path.GetFullPath(source.TrimEnd('\\')));
+                return ReplaceInPath(dest, "*", replacement);
+            }
             return dest;
         }
 
@@ -117,6 +122,21 @@ namespace FileUtilitiesCore.Managers.Commands
                     }
                 }
             }
+        }
+
+        public static string ReplaceInPath(string path, string searchString, string replacementString)
+        {
+            // Split the path into its components
+            string[] pathComponents = path.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+
+            // Replace components that match the search string with the replacement string
+            string[] updatedComponents = pathComponents.Select(component => 
+                component.Equals(searchString, StringComparison.OrdinalIgnoreCase) ? replacementString : component).ToArray();
+
+            // Join the components back into a single path
+            string updatedPath = string.Join(Path.DirectorySeparatorChar.ToString(), updatedComponents);
+
+            return updatedPath;
         }
     }
 }
