@@ -71,7 +71,7 @@ namespace FileUtilitiesCore.Managers.Commands
             
             if (force) 
             {
-                foreach (var dir in dirs) Directory.Delete(dir);
+                foreach (var dir in dirs) Directory.Delete(dir, true);
             }
             else Delete(dirs);
         }
