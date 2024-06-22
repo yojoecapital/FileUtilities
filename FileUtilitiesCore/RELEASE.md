@@ -1,6 +1,6 @@
-# Release Notes - Version [3.1.1]
+# Release Notes - Version [3.1.2]
 
-- `fs exec` now executes in the same shell. It can take the flag `-nw` to specify to execute in a new window.
+- The help message input for `fs make script` now uses multiline input.
   
 
 ## Commands
@@ -76,7 +76,7 @@ This is an example of how the settings JSON may look like. You can use `fs open`
 ```json
 {
   "scriptsPath": "scripts",
-  "endBlock":  "</script>",
+  "endBlock":  "</done>",
   "methods": {
     "cmd": {
       "path": "cmd.exe",
@@ -98,7 +98,7 @@ This is an example of how the settings JSON may look like. You can use `fs open`
 ### JSON Fields
 
 - `"scriptsPath"`: The path to the script items. You can use this to save the scripts to a different directory, such as a shared directory. Make sure the directory is used exclusively for script items.
-- `"endBlock"`: This is the token to end a script when running `make script [name]`.
+- `"endBlock"`: This is the token to end multiline input when running `fs make script`.
 - `"methods"`: These are methods used to execute a script item.
   - `"path"`: What should execute the script.
   - `"setup"`: Pre-arguments such as `/c` for `cmd.exe`.
