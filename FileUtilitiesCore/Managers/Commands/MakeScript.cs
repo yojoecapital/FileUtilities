@@ -54,7 +54,7 @@ namespace FileUtilitiesCore.Managers.Commands
             }
             var script = string.Join("\n", lines);
 
-            Console.Write("Enter in a help message: ");
+            Console.WriteLine($"Write a help message. (enter in '{endBlock}') to finish):");
             lines = new List<string>();
             while (true)
             {
