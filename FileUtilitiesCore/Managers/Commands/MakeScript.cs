@@ -45,7 +45,7 @@ namespace FileUtilitiesCore.Managers.Commands
             var endBlock = Helpers.fileManager.Settings.endBlock;
             Console.WriteLine($"Write your script. (enter in '{endBlock}') to finish):");
             var lines = new List<string>();
-            string lineInput = null;
+            string lineInput;
             while (true)
             {
                 lineInput = Console.ReadLine();
@@ -55,7 +55,14 @@ namespace FileUtilitiesCore.Managers.Commands
             var script = string.Join("\n", lines);
 
             Console.Write("Enter in a help message: ");
-            var help = Console.ReadLine().Trim();
+            lines = new List<string>();
+            while (true)
+            {
+                lineInput = Console.ReadLine();
+                if (lineInput.Trim().Equals(endBlock)) break;
+                else lines.Add(lineInput);
+            }
+            var help = string.Join("\n", lines);
 
 
             var scriptItem = new ScriptItem()

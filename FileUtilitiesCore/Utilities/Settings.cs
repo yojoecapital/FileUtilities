@@ -3,7 +3,7 @@
     internal class Settings
     {
         public string scriptsPath = "scripts";
-        public string endBlock = "</script>";
+        public string endBlock = "</done>";
         public long dialogueSize = 100;
         public Dictionary<string, ExecutionMethod> methods = new();
     }
