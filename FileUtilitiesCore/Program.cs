@@ -66,6 +66,12 @@ namespace FileUtilitiesCore
                 "Display the directory or file information at [paths...]."
             );
             repl.AddCommand(
+                args => args.Length > 0 && args[0].ToLower().Equals("type"),
+                Managers.Commands.Type.Command,
+                "type [file] -en [encoding]",
+                "Prints the content of a file to console.\nAuto-detects the file encoding.\nUse -en to specify encoding.\n('UTF8', 'UTF16-LE', 'UTF16-BE', 'UTF32')"
+            );
+            repl.AddCommand(
                 args => args.Length > 0 && (args[0].ToLower().Equals("exec") || args[0].ToLower().Equals("!")),
                 Exec.Command,
                 "exec (!) [name] [args...] -nw",
