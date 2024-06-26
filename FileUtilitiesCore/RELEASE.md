@@ -1,6 +1,6 @@
-# Release Notes - Version [3.1.2]
+# Release Notes - Version [3.1.3]
 
-- The help message input for `fs make script` now uses multiline input.
+- The command `fs type` can be used to print a file's content to screen. Unless specified, it tries to guess the file's encoding.
   
 
 ## Commands
@@ -48,10 +48,13 @@
   - `-i [include]`: Include glob patterns.
   - `-e [exclude]`: Exclude glob patterns.
 
-### Make Files and Directories
+### Files and Directories
 
 - `mkdir [dirs...]`: Make new directories at `[dirs...]`.
 - `touch [files...]`: Update the files at `[files...]` if they exist. Otherwise, create them.
+- `type [file] -en [encoding]`: Prints the content of a file to console. Auto-detects the file encoding. ✨
+  - `-en`: Specify encoding. This can be: `UTF8`, `UTF16-LE`, `UTF16-BE`, `UTF32`.
+
 
 ### Metadata
 

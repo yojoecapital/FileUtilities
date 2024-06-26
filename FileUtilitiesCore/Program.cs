@@ -60,16 +60,16 @@ namespace FileUtilitiesCore
                 "Update the files at [files...] if it exists. Otherwise, it creates it."
             );
             repl.AddCommand(
+                args => args.Length > 0 && args[0].ToLower().Equals("type"),
+                Managers.Commands.Type.Command,
+                "type [file] -en [encoding]",
+                "Prints the content of a file to console.\nAuto-detects the file encoding.\nUse -en to specify encoding.\nThis can be: 'UTF8', 'UTF16-LE', 'UTF16-BE', 'UTF32'."
+            );
+            repl.AddCommand(
                 args => args.Length > 0 && args[0].ToLower().Equals("info"),
                 Info.Command,
                 "info [paths...]",
                 "Display the directory or file information at [paths...]."
-            );
-            repl.AddCommand(
-                args => args.Length > 0 && args[0].ToLower().Equals("type"),
-                Managers.Commands.Type.Command,
-                "type [file] -en [encoding]",
-                "Prints the content of a file to console.\nAuto-detects the file encoding.\nUse -en to specify encoding.\n('UTF8', 'UTF16-LE', 'UTF16-BE', 'UTF32')"
             );
             repl.AddCommand(
                 args => args.Length > 0 && (args[0].ToLower().Equals("exec") || args[0].ToLower().Equals("!")),

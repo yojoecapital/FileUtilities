@@ -48,10 +48,12 @@
   - `-i [include]`: Include glob patterns.
   - `-e [exclude]`: Exclude glob patterns.
 
-### Make Files and Directories
+### Files and Directories
 
 - `mkdir [dirs...]`: Make new directories at `[dirs...]`.
 - `touch [files...]`: Update the files at `[files...]` if they exist. Otherwise, create them.
+- `type [file] -en [encoding]`: Prints the content of a file to console. Auto-detects the file encoding.
+  - `-en`: Specify encoding. This can be: `UTF8`, `UTF16-LE`, `UTF16-BE`, `UTF32`.
 
 ### Metadata
 
